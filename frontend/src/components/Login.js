@@ -6,7 +6,7 @@ function Login()
     var loginPassword;
     const [message,setMessage] = useState('');
 
-    const app_name = 'steamguru'
+    const app_name = 'steamguru-77d4152ed074'
     function buildPath(route)
     {
         if (process.env.NODE_ENV === 'production')
