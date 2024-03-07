@@ -2,8 +2,17 @@ import React from 'react';
 
 function PageTitle()
 {
+    const handleHomeClick = () => {
+        window.location.href = '/';    
+    };
+
     return(
-        <h1 id="title">COP 4331 MERN Stack Demo</h1>
+        <div>
+            <button onClick={handleHomeClick}>
+                Home
+            </button>
+            <h1>Steam Guru</h1>
+        </div>  
     );
 };
 

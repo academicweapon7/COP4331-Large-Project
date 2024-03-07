@@ -55,7 +55,7 @@ function Register()
     return(
         <div id="registerDiv">
         <form onSubmit={doRegister}>
-        <span id="inner-title">SIGN UP</span><br />
+        <span id="inner-title">Register</span><br />
         <input type="text" id="registerLogin" placeholder="Username"
         ref={(c) => registerLogin = c} /><br />
         <input type="password" id="registerPassword" placeholder="Password"
@@ -63,7 +63,7 @@ function Register()
         <input type="text" id="registerEmail" placeholder="Email"
         ref={(c) =>  registerEmail = c} /><br />
         <input type="submit" id="loginButton" class="buttons"
-        value = "Do It"
+        value = "Sign Up"
         onClick={doRegister} />
         </form>
         <span id="registerResult">{message}</span>

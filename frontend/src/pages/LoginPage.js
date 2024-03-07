@@ -8,6 +8,9 @@ const LoginPage = () =>
         <div>
         <PageTitle />
         <Login />
+        <a href = "/Register">
+            New User? Sign up here!
+        </a>
         </div>
     );
 };
