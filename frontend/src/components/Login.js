@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function Login()
 {
@@ -52,18 +54,27 @@ function Login()
     };
 
     return(
-        <div id="loginDiv">
-        <form onSubmit={doLogin}>
-        <span id="inner-title">PLEASE LOG IN</span><br />
-        <input type="text" id="loginName" placeholder="Username"
-            ref={(c) => loginName = c} /><br />
-        <input type="password" id="loginPassword" placeholder="Password"
-            ref={(c) => loginPassword = c} /><br />
-        <input type="submit" id="loginButton" class="buttons" value = "Login" onClick={doLogin} />
-        </form>
-        <span id="loginResult">{message}</span>
+
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-md-2">
+                    <form onSubmit={doLogin}>
+                        <h2 className="text-center mb-3">Login</h2>
+                        <div className="form-group">
+                            <input type="text" className="form-control" id="loginName" placeholder="Username" ref={(c) => loginName = c} />
+                        </div>
+                        <div className="form-group mb-3">
+                            <input type="password" className="form-control" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} />
+                        </div>
+                        <div className="form-group text-center">
+                            <button type="submit" className="btn btn-primary mx-auto d-block">Login</button>
+                        </div>
+                    </form>
+                    <div id="loginResult" className="mt-3 text-center">{message}</div>
+                </div>
+            </div>
         </div>
-            
+
     );
 };
 export default Login;

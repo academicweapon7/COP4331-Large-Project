@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CardUI()
 {
@@ -11,15 +12,13 @@ function CardUI()
     let _ud = localStorage.getItem('user_data');
     let ud = JSON.parse(_ud);
     let userId = ud.id;
-    let firstName = ud.firstName;
-    let lastName = ud.lastName;
 
     const app_name = 'steamguru-77d4152ed074'
     function buildPath(route)
     {
         if (process.env.NODE_ENV === 'production')
         {
-        return 'https://' + app_name + '.herokuapp.com/' + route;
+            return 'https://' + app_name + '.herokuapp.com/' + route;
         }
         else
         {
@@ -43,7 +42,8 @@ function CardUI()
             let res = JSON.parse(txt);
             if (res.error.length > 0) {
                 setMessage("API Error:" + res.error);
-            } else {
+            } 
+            else {
                 setMessage('Card has been added');
             }
         })
@@ -62,10 +62,12 @@ function CardUI()
                 body: js,
                 headers: { 'Content-Type': 'application/json' }
             });
+
             let txt = await response.text();
             let res = JSON.parse(txt);
             let _results = res.results;
             let resultText = '';
+
             for (var i = 0; i < _results.length; i++) {
                 resultText += _results[i];
                 if (i < _results.length - 1) {
@@ -74,7 +76,8 @@ function CardUI()
             }
             setResults('Card(s) have been retrieved');
             setCardList(resultText);
-        } catch (e) {
+        } 
+        catch (e) {
             alert(e.toString());
             setResults(e.toString());
         }

@@ -1,15 +1,18 @@
 import React from 'react';
 import PageTitle from '../components/PageTitle';
+import Logo from '../components/Logo';
 import LoggedInName from '../components/LoggedInName';
-import CardUI from '../components/CardUI';
+import LeaderBoard from '../components/LeaderBoard';
+
 
 const CardPage = () =>
 {
     return(
         <div>
         <PageTitle />
+        <Logo />
         <LoggedInName />
-        <CardUI />
+        <LeaderBoard />
         </div>
     );
 }

@@ -1,16 +1,20 @@
 import React from 'react';
 import PageTitle from '../components/PageTitle';
+import Logo from '../components/Logo';
 import Register from '../components/Register';
 
-const RegisterPage = () =>
-{
-    return(
+const RegisterPage = () => {
+    
+    return (
         <div>
-        <PageTitle />
-        <Register />
-        <a href = "/">
-            Already a user? Login now!
-        </a>
+            <PageTitle />
+            <Logo />
+            <Register />
+            <div className="text-center">
+                <a href="/">
+                    Already a user? Login now!
+                </a>
+            </div>
         </div>
     );
 };
