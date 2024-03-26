@@ -10,11 +10,12 @@ function PageTitle()
 
     return (
         <div className="container">
-            <div className="row">
+            <div className="row align-items-start">
                 <div className="col-md-6">
                     <button onClick={handleHomeClick} className="btn btn-secondary">
                         Home
                     </button>
+                    
                 </div>
             </div>
             <div className="row justify-content-center">

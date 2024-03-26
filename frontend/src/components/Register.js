@@ -30,11 +30,12 @@ function Register() {
                 headers: { 'Content-Type': 'application/json' }
             });
             var res = JSON.parse(await response.text());
-            if (res.id >= 0) {
-                setMessage('Username already in use');
-            } else {
+            if (!res.error) {
                 setMessage('');
                 window.location.href = '/';
+                
+            } else {
+                setMessage(res.error);
             }
         } catch (e) {
             alert(e.toString());
@@ -45,7 +46,6 @@ function Register() {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-md-2">
                     <div id="registerDiv">
                         <form onSubmit={doRegister}>
                             <h2 className="text-center">Register</h2>
@@ -67,7 +67,7 @@ function Register() {
                                     ref={(c) => (registerPassword = c)}
                                 />
                             </div>
-                            <div className="form-group mb-3">
+                            <div className="form-group">
                                 <input
                                     type="text"
                                     className="form-control"
@@ -76,7 +76,7 @@ function Register() {
                                     ref={(c) => (registerEmail = c)}
                                 />
                             </div>
-                            <div className="form-group text-center mb-3">
+                            <div className="form-group text-center">
                                 <button
                                     type="submit"
                                     className="btn btn-primary"
@@ -85,11 +85,10 @@ function Register() {
                                 </button>
                             </div>
                         </form>
-                        <div className="text-center" id="registerResult">
+                        <div className="red-text" id="registerResult">
                             {message}
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     );
