@@ -1,9 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from './pages/LoginPage';
-import CardPage from './pages/CardPage';
-import RegisterPage from './pages/RegisterPage';
+import LeaderBoardPage from './pages/LeaderBoardPage';
 import HomePage from './pages/HomePage';
 
 function App() {
@@ -11,9 +9,7 @@ function App() {
         <BrowserRouter>
         <Routes>
         <Route path="/" index element={<HomePage />} />
-        <Route path="/login" index element={<LoginPage />} />
-        <Route path="/cards" index element={<CardPage />} />
-        <Route path="/register" index element={<RegisterPage />} />
+        <Route path="/leaderboard" index element={<LeaderBoardPage />} />
         </Routes>
         </BrowserRouter>
     );

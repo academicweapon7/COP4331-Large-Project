@@ -17,6 +17,27 @@ function Register() {
 
     const doRegister = async event => {
         event.preventDefault();
+
+        if (!registerLogin.value && !registerPassword.value && !registerEmail.value) {
+            setMessage('Please fill in all fields');
+            return;
+        }
+
+        if (!registerLogin.value) {
+            setMessage('Username required');
+            return;
+        }
+
+        if (!registerPassword.value) {
+            setMessage('Password required');
+            return;
+        }
+
+        if (!registerEmail.value) {
+            setMessage('Email required');
+            return;
+        }
+
         var obj = {
             login: registerLogin.value,
             password: registerPassword.value,

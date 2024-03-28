@@ -24,6 +24,22 @@ function Login()
     const doLogin = async event =>
     {
         event.preventDefault();
+
+        if (!loginName.value && !loginPassword.value) {
+            setMessage('Please fill in all fields');
+            return;
+        }
+
+        if (!loginName.value) {
+            setMessage('Username required');
+            return;
+        }
+
+        if (!loginPassword.value) {
+            setMessage('Password required');
+            return;
+        }
+
         var obj = {login:loginName.value,password:loginPassword.value};
         var js = JSON.stringify(obj);
         try
@@ -39,7 +55,7 @@ function Login()
                 var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
-                window.location.href = '/cards';
+                window.location.href = '/leaderboard';
             }
             else
             {
