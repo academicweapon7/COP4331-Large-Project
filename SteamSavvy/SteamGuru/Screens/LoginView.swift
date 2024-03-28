@@ -37,14 +37,14 @@ struct LoginView: View {
                         .frame(width: 300, height: 50)
                         .background(Color.white.opacity(0.3))
                         .cornerRadius(10)
-                        //.border(.red, width: CGFloat(wrongUsername)).cornerRadius(4)
+                        
                     
                     SecureField("Password", text: $password)
                         .padding()
                         .frame(width: 300, height: 50)
                         .background(Color.white.opacity(0.3))
                         .cornerRadius(10)
-                        //.border(.red, width: CGFloat(wrongPassword)).cornerRadius(4)
+                        
                     
                     if(wrongInput == 2){
                         Text("Incorrect Username/Password")
@@ -54,13 +54,12 @@ struct LoginView: View {
                     }
                     
                     Button(action: {doLogin(login: username, password: password)}){
-                        //User authentication logic would go here, using test values right now
                         
                         Text("Login")
                             .font(.title3)
-                            .foregroundColor(.white)
+                            .foregroundColor(Color.white)
                             .frame(width: 300, height: 50)
-                            .background(Color.blue.opacity(0.8))
+                            .background(Color.accent)
                             .cornerRadius(10)
                     }
                     
@@ -122,10 +121,8 @@ struct LoginView: View {
                 }
                 print("The login is: " + receivedLogin.description)
                 
-                let loginID = receivedLogin["id"] //as? String else {
-                   // print("Could not get loginID as int from JSON")
-                    //return
-               // }
+                let loginID = receivedLogin["id"]
+                
                 print("The ID is: \(loginID ?? 0)")
                 
                 
