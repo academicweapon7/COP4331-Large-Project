@@ -52,7 +52,7 @@ exports.setApp = function ( app, client )
     }
     else 
     {
-      const newUser = {email:email,login:login,password:password,highscore:0,rounds_played:0,rounds_won:0,streak:0};
+      const newUser = {email:email,login:login,password:password,highscore:0,rounds_played:0,rounds_won:0,streak:0,verified:false};
       var error = '';
 
       try
@@ -71,6 +71,86 @@ exports.setApp = function ( app, client )
     
     res.status(200).json(ret);
 
+  });
+
+
+  app.post('/api/deleteaccount', async(req, res, next) =>
+  {
+    //incoming: id
+    //outgoing: error
+
+    const { id } = req.body;
+
+    const {ObjectId} = require('mongodb');
+    var o_id = new ObjectId(id);
+
+    const db = client.db("Database");
+    const results = await db.collection('Users').find({_id:o_id}).toArray();
+
+    var error = '';
+
+    if( results.length > 0 ) 
+    {
+      try {
+        db.collection("Users").deleteOne({_id:o_id});
+      }
+      catch (e) 
+      {
+        error = e.toString();
+      }
+    }
+    else 
+    {
+      error = "User not found.";
+    }
+
+    var ret = { error:error };
+    res.status(200).json(ret);
+  });
+
+
+  app.post('/api/verifyaccount', async(req, res, next) =>
+  {
+    //incoming: id
+    //outgoing: error
+
+    const { id } = req.body;
+
+    const {ObjectId} = require('mongodb');
+    var o_id = new ObjectId(id);
+
+    const db = client.db("Database");
+    const results = await db.collection('Users').find({_id:o_id}).toArray();
+
+    var error = '';
+
+    if( results.length > 0 ) 
+    {
+      if( results[0].verified == true) 
+      {
+        error = "User already verified.";
+      }
+      else
+      {
+        try {
+            await db.collection("Users").updateOne(
+              { _id:o_id },
+              { $set: { verified:true } }
+            );
+          } 
+          catch (e) 
+          {
+            error = e.toString();
+          }
+      }
+    }
+    else 
+    {
+      error = "User not found.";
+    }
+
+    var ret = { error:error };
+    res.status(200).json(ret);
   });
 
 
@@ -121,7 +201,7 @@ exports.setApp = function ( app, client )
     // incoming: id, score
     // outgoing: highscore, rounds_played, rounds_won, error
 
-    const { id, score } = req.body
+    const { id, score } = req.body;
 
     
     const {ObjectId} = require('mongodb');
@@ -151,7 +231,7 @@ exports.setApp = function ( app, client )
       rounds_won = results[0].rounds_won + score;
       
       try {
-        db.collection("Users").updateOne(
+        await db.collection("Users").updateOne(
           { _id:o_id },
           { $set: { highscore:highscore, rounds_played:rounds_played, rounds_won:rounds_won } }
         );
