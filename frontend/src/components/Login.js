@@ -73,8 +73,8 @@ function Login()
 
         <div className="container">
             <div className="row justify-content-center">
-                    <form onSubmit={doLogin}>
-                        <h2 className="text-center">Login</h2>
+                <form onSubmit={doLogin}>
+                    <h2 className="text-center">Login</h2>
                         <div className="form-group">
                             <input type="text" className="form-control" id="loginName" placeholder="Username" ref={(c) => loginName = c} />
                         </div>
@@ -84,10 +84,14 @@ function Login()
                         <div className="form-group text-center">
                             <button type="submit" className="btn btn-primary mx-auto d-block">Login</button>
                         </div>
-                    </form>
-                    <div id="loginResult" className="red-text">{message}</div>
+                        <div className="form-group text-center">
+                            <a href="/passwordreset" className="btn btn-secondary">Reset Password</a>
+                        </div>
+                </form>
+                <div id="loginResult" className="red-text">{message}</div>
             </div>
         </div>
     );
 };
+
 export default Login;
