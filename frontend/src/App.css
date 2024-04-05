@@ -1,3 +1,5 @@
+@import 
+
 .App {
   text-align: center;
 }
@@ -14,7 +16,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: hsl(0, 0%, 100%)
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -28,6 +30,15 @@
   color: #61dafb;
 }
 
+.custom-btn {
+  background: #fff;
+  color: red;
+  border: 2px solid red;
+  border-radius: 3px;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,9 +46,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-.invalid-input {
-  color: red;
-  font-style: italic;
 }
