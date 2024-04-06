@@ -51,11 +51,11 @@ struct WelcomeView: View {
                             .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                     }
                     
-                    Button(action: {}){
+                    Button(action: {UIApplication.shared.open(URL(string: "https://steamguru-77d4152ed074.herokuapp.com/passwordreset")! as URL, options: [:], completionHandler: nil)}){
                         Text("Forgot Password?")
                             
                     }
-                    .padding(.top, 3.0)
+                    .padding(.top, 20.0)
                     
                 }
                 .padding()
