@@ -69,10 +69,12 @@ struct SignUpView: View {
                     
                     if(invalidPassword == 1){
                         Text("Invalid Password \n 8 characters minimum \n One uppercase letter \n One number\n One special character (!@#$&*)")
-                            .font(.callout)
+                            .font(.custom("callout", fixedSize: 14))
                             .fontWeight(.semibold)
                             .foregroundColor(Color(hue: 1.0, saturation: 0.777, brightness: 0.831))
                             .multilineTextAlignment(.center)
+                            
+                            
                     }
                     
                     if(invalidPasswordConf == 1){
@@ -116,7 +118,9 @@ struct SignUpView: View {
                 }
             
             }
-        .navigationBarHidden(true)
+            .navigationDestination(isPresented: $successfulRegister){
+                LoginView()
+            }
         }
     }
     
