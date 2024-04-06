@@ -15,4 +15,7 @@ Web App
 
 Mobile App
 - Color scheme
-- Game loop
+- Finish LandingView
+- Add button from LandingView -> GameView
+- GameView UI Format
+- Game Logic
