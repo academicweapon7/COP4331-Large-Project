@@ -17,7 +17,7 @@ struct LoginView: View {
     @State private var showingLoginScreen = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color.primarycolor.edgesIgnoringSafeArea(.all)
                 Circle()
@@ -63,8 +63,8 @@ struct LoginView: View {
                             .cornerRadius(10)
                     }
                     
-                    NavigationLink(destination: Text("You are logged in @\(username)"), isActive: $showingLoginScreen){
-                        EmptyView()
+                    .navigationDestination(isPresented: $showingLoginScreen){
+                        LandingView(username: $username)
                     }
                 }
                 
