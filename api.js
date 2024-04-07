@@ -195,6 +195,39 @@ exports.setApp = function ( app, client )
     res.status(200).json(ret);
   });
 
+  app.post('/api/getgame', async (req, res, next) =>
+  {
+    // incoming: count
+    // outgoing: id, title, peakPlayerCount, imageURL, error
+
+    var error = '';
+
+    //const { count } = req.body;
+
+    const db = client.db("Database");
+    const results = await db.collection('Games').aggregate([{ $sample: { size: 1 } }]).toArray();
+
+    var id = -1;
+    var title = '';
+    var peakPlayerCount = -1;
+    var image_url = '';
+
+    if( results.length > 0)
+    {
+      id = results[0]._id;
+      title = results[0].title;
+      peakPlayerCount = results[0].peakPlayerCount;
+      image_url = results[0].image_url;
+    }
+    else 
+    {
+      error = "Could not retrieve game";
+    }
+    
+    ret = { id:id, title:title, peakPlayerCount:peakPlayerCount, image_url:image_url, error:error};
+    res.status(200).json(ret);
+  });
+
 
   app.post('/api/gameover', async (req, res, next) =>
   {
