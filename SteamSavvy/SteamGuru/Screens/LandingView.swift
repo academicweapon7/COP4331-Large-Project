@@ -9,33 +9,38 @@ import SwiftUI
 
 struct LandingView: View {
     @Binding var username: String
+    @State private var showGameView = false
    
     var body: some View {
-        
-        ZStack{
-            Color.primarycolor.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            VStack{
-                Text("@\(self.username)")
-                    .font(.headline)
-                    .fontWeight(.semibold)
+        NavigationStack{
+            ZStack{
+                Color.primarycolor.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                VStack{
+                    Text("@\(self.username)")
+                        .font(.headline)
+                        .fontWeight(.semibold)
                     //.padding(.leading, 200)
-                    .frame(width: 130.0, height: 1.0)
-                    .foregroundStyle(.white)
-                    .offset(x: 125, y: -340)
+                        .frame(width: 130.0, height: 1.0)
+                        .foregroundStyle(.white)
+                        .offset(x: 125, y: -340)
                     
-                
-                Button(action: {}){
                     
-                    Text("Start Game")
-                        .font(.title3)
-                        .foregroundColor(Color.white)
-                        .frame(width: 300, height: 50)
-                        .background(Color.accent)
-                        .cornerRadius(10)
+                    Button(action: {showGameView = true}){
+                        
+                        Text("Start Game")
+                            .font(.title3)
+                            .foregroundColor(Color.white)
+                            .frame(width: 300, height: 50)
+                            .background(Color.accent)
+                            .cornerRadius(10)
+                    }
+                    
+                    .navigationDestination(isPresented: $showGameView){
+                        GameView()
+                    }
                 }
             }
         }
-        
     }
 }
 
