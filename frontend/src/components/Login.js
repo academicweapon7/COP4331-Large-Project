@@ -3,22 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login()
 {
+    var bp = require('./Path.js');
     var loginName;
     var loginPassword;
     const [message,setMessage] = useState('');
-
-    const app_name = 'steamguru-77d4152ed074'
-    function buildPath(route)
-    {
-        if (process.env.NODE_ENV === 'production')
-        {
-        return 'https://' + app_name + '.herokuapp.com/' + route;
-        }
-        else
-        {
-            return 'http://localhost:5000/' + route;
-        }
-    }
 
     const doLogin = async event =>
     {
@@ -38,7 +26,7 @@ function Login()
         var js = JSON.stringify(obj);
         try
         {
-            const response = await fetch(buildPath('api/login'), {
+            const response = await fetch(bp.buildPath('api/login'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' }

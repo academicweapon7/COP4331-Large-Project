@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Register() {
+
+    var bp = require('./Path.js');
+
     const [message, setMessage] = useState('');
     let registerEmail, registerLogin, registerPassword;
 
@@ -45,7 +48,7 @@ function Register() {
         };
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/register'), {
+            const response = await fetch(bp.buildPath('api/register'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' }
