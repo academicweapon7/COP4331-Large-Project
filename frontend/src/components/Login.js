@@ -25,11 +25,6 @@ function Login()
     {
         event.preventDefault();
 
-        if (!loginName.value && !loginPassword.value) {
-            setMessage('Please fill in all fields');
-            return;
-        }
-
         if (!loginName.value) {
             setMessage('Username required');
             return;
