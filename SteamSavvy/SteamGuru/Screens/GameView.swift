@@ -36,12 +36,32 @@ struct GameView: View {
             VStack{
                 
                 
-                ImageView(urlString: gameImage1 as? String)
-                    .padding(.bottom, -4.0)
-                    .frame(width: 400.0, height: 355)
-                    .opacity(/*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/)
-                    .overlay(ImageOverlay(text: $gameTitle1))
+                HStack{
+                    
+                    Text("High Score: 0")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top , -20)
+                        .padding(.leading, 180.0)
+                    
+                    Text("Score: 0")
+                        .font(.body)
+                        .fontWeight(.bold)
+                        .padding(.top , -20)
+                        .foregroundColor(.white)
+                    
+                }
                 
+                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/){
+                    ImageView(urlString: gameImage1 as? String)
+                        .padding(.bottom, -4.0)
+                        .frame(width: 400.0, height: 355)
+                        .opacity(/*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/)
+                        .overlay(ImageOverlay(text: $gameTitle1))
+                        .overlay(ImageOverlay(text: $peakPlayerCount1)
+                            .padding(.top, 120.0))
+                }
                 /*Printing without overlay
                 Text("\(gameTitle1 ?? "Error")")
                     .foregroundColor(Color.white)
@@ -57,12 +77,13 @@ struct GameView: View {
                     .overlay(.white)
                     */
                 
-                ImageView(urlString: gameImage2 as? String)
-                    .padding(.top, -4.0)
-                    .frame(width: 400.0, height: 355)
-                    .opacity(/*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/)
-                    .overlay(ImageOverlay(text: $gameTitle2))
-                
+                Button(action: {}){
+                    ImageView(urlString: gameImage2 as? String)
+                        .padding(.top, -4.0)
+                        .frame(width: 400.0, height: 355)
+                        .opacity(/*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/)
+                        .overlay(ImageOverlay(text: $gameTitle2))
+                }
                 /*Printing without overlay
                 Text("\(gameTitle2 ?? "Error")")
                     .foregroundColor(Color.white)
@@ -83,6 +104,7 @@ struct GameView: View {
             Text("VS")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .foregroundColor(.black)
             
         }
         
