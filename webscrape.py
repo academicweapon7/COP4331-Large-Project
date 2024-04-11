@@ -18,12 +18,12 @@ api_key = "AIzaSyDeugBj9NGMmu3nA1Fc1dYEJJvnWkWQB-o"
 csv_file = "data.csv"
 try:
     # Open CSV file
-    with open(csv_file, 'r', encoding='utf-8') as file:
+    with open(csv_file, 'r', encoding='utf-8-sig') as file:
         reader = csv.DictReader(file, delimiter=',')
 
         # Iterate over each row in the CSV file
         for row in reader:
-            search = row['\ufefftitle']
+            search = row['title']
             url = f"https://www.googleapis.com/customsearch/v1?q={search} game 1920x1080&num=1&start=1&imgSize=huge&searchType=image&key={api_key}&cx={cse_id}"
             response = requests.get(url)
             response.raise_for_status()
@@ -42,7 +42,5 @@ try:
             
             # Insert row into MongoDB collection
             collection.insert_one(row)
-except UnicodeDecodeError:
-    print(f"Error: File must be utf-8 encoded")
 except Exception as e:
     print(f"Error: {e}")
