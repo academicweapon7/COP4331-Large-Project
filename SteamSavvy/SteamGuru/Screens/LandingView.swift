@@ -22,7 +22,21 @@ struct LandingView: View {
                     //.padding(.leading, 200)
                         .frame(width: 130.0, height: 1.0)
                         .foregroundStyle(.white)
-                        .offset(x: 125, y: -340)
+                        .offset(x: 125, y: -220)
+                    
+                    
+                    Text("How to play!")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .padding(.bottom)
+                        .foregroundColor(.white)
+                    
+                    Text("You will be presented with two different games on Steam. The objective of the game is to select the one with the highest peak player count.")
+                        .font(.body)
+                        .foregroundColor(Color.white)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .padding(.bottom, 100)
                     
                     
                     Button(action: {showGameView = true}){
@@ -34,6 +48,8 @@ struct LandingView: View {
                             .background(Color.accent)
                             .cornerRadius(10)
                     }
+                    
+                   
                     
                     .navigationDestination(isPresented: $showGameView){
                         GameView()
@@ -48,8 +64,7 @@ struct LandingView: View {
 
 
 struct BindingViewPreviewContainer : View {
-     @State
-     private var username = "RickL"
+     @State private var username = "RickL"
 
      var body: some View {
           LandingView(username: $username)
