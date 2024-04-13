@@ -69,7 +69,6 @@ struct LoginView: View {
                 }
                 
             }
-            .navigationBarHidden(true)
         }
     }
     
