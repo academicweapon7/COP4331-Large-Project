@@ -195,9 +195,10 @@ exports.setApp = function ( app, client )
     res.status(200).json(ret);
   });
 
+  
   app.post('/api/getgame', async (req, res, next) =>
   {
-    // incoming: count
+    // incoming: 
     // outgoing: id, title, peakPlayerCount, imageURL, error
 
     var error = '';
@@ -281,6 +282,42 @@ exports.setApp = function ( app, client )
     
     ret = { highscore:highscore, rounds_played:rounds_played, rounds_won:rounds_won, error:error};
     res.status(200).json(ret);
+  });
+
+
+  app.post('/api/getleaderboard', async (req, res, next) =>
+  {
+    // incoming: top, bottom
+    // outgoing: results
+
+    var _ret = [];
+    var error = '';
+
+    const { top, bottom } = req.body
+
+    if (top <= 0 || top > bottom)
+    {
+      error = "improper leaderboard parameters";
+    }
+    else{
+      const db = client.db("Database");
+      const results = await db.collection('Users').find().sort({highscore: -1}).skip(top-1).limit(bottom-top+1).toArray();
+
+      if (results.length <= 0) 
+      {
+        error = "empty leaderboard"
+      }
+      else{
+        for( var i = 0; i < results.length; i++ )
+        {
+          _ret.push( results[i] );
+        }
+      }
+    }
+
+    var ret = {results:_ret, error:error};
+    res.status(200).json(ret);
+
   });
 
 
