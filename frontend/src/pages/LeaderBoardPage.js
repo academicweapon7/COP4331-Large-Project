@@ -4,7 +4,7 @@ import Logo from '../components/Logo';
 import LeaderBoard from '../components/LeaderBoard';
 
 
-const CardPage = () =>
+const LeaderBoardPage = () =>
 {
     return(
         <div>
@@ -15,4 +15,4 @@ const CardPage = () =>
     );
 }
 
-export default CardPage;
+export default LeaderBoardPage;

@@ -3,19 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function PageTitle() 
 {
-    const handleHomeClick = () => 
-    {
-        window.location.href = '/';    
-    };
-
     return (
         <div className="container">
             <div className="row align-items-start">
                 <div className="col-md-6">
-                    <button onClick={handleHomeClick} className="btn btn-secondary">
-                        Home
-                    </button>
-                    
+                    <div className="form-group text-center">
+                        <a href="/" className="btn btn-secondary">Home</a>
+                    </div>                    
                 </div>
             </div>
             <div className="row justify-content-center">

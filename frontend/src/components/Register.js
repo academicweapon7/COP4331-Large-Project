@@ -2,18 +2,11 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Register() {
+
+    var bp = require('./Path.js');
+
     const [message, setMessage] = useState('');
     let registerEmail, registerLogin, registerPassword;
-
-    const app_name = 'steamguru-77d4152ed074';
-
-    function buildPath(route) {
-        if (process.env.NODE_ENV === 'production') {
-            return 'https://' + app_name + '.herokuapp.com/' + route;
-        } else {
-            return 'http://localhost:5000/' + route;
-        }
-    }
 
     const doRegister = async event => {
         event.preventDefault();
@@ -45,7 +38,7 @@ function Register() {
         };
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/register'), {
+            const response = await fetch(bp.buildPath('api/register'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' }
