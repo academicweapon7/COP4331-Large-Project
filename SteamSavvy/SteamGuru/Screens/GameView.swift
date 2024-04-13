@@ -13,13 +13,23 @@ struct GameView: View {
     @State private var gameTitle1 : Any?
     @State private var gameImage1 : Any?
     @State private var peakPlayerCount1 : Any?
+   // @State private var game1Chosen = false
+    @State private var playerCountInt1 = 0
     
     @State private var gameTitle2 : Any?
     @State private var gameImage2 : Any?
     @State private var peakPlayerCount2 : Any?
+    //@State private var game2Chosen = false
+    @State private var playerCountInt2 = 0
     
+    //Variables used by gameplay
+    @State private var displayText : Any? = "peak players"
     @State private var function1Called = false
     @State private var function2Called = false
+    @State private var gameOver = false
+    @State private var highScore = 0
+    @State private var score = 0
+    @State private var showGameoverView = false
     
     var body: some View {
         
@@ -28,84 +38,109 @@ struct GameView: View {
             getGame1()
             getGame2()
         }
+
         
         //needed to add "return" because function is being called directly within a view
-        return ZStack{
-            Color.primarycolor.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-            
-            VStack{
+        
+        return NavigationStack{
+             ZStack{
+                Color.primarycolor.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                 
-                
-                HStack{
+                VStack{
                     
-                    Text("High Score: 0")
-                        .font(.body)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top , -20)
-                        .padding(.leading, 180.0)
                     
-                    Text("Score: 0")
-                        .font(.body)
-                        .fontWeight(.bold)
-                        .padding(.top , -20)
-                        .foregroundColor(.white)
+                    HStack{
+                        
+                        Text("High Score: \(highScore)")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.top , -20)
+                            .padding(.leading, 180.0)
+                        
+                        Text("Score: \(score)")
+                            .font(.body)
+                            .fontWeight(.bold)
+                            .padding(.top , -20)
+                            .foregroundColor(.white)
+                        
+                    }
+                    
+                    Button(action: {gameplay1()}){
+                        ImageView(urlString: gameImage1 as? String)
+                            .padding(.bottom, -4.0)
+                            .frame(width: 400.0, height: 355)
+                            .opacity(0.4)
+                            .overlay(ImageOverlay(text: $gameTitle1)
+                                .font(.largeTitle)
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color.white))
+                            .overlay(ImageOverlay(text: $peakPlayerCount1)
+                                .font(.largeTitle)
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color.white)
+                                .padding(.top, 120.0))
+                            .overlay(ImageOverlay(text: $displayText)
+                                .font(.callout)
+                                .opacity(0.8)
+                                .fontWeight(.medium)
+                                .foregroundColor(Color.white)
+                                .padding(.top, 180.0))
+                        
+                        
+                    }
+                    /*Printing without overlay
+                     Text("\(gameTitle1 ?? "Error")")
+                     .foregroundColor(Color.white)
+                     Text("\(peakPlayerCount1 ?? 0)")
+                     .foregroundColor(Color.white)
+                     .font(.body)
+                     .fontWeight(.semibold)
+                     */
+                    
+                    
+                    /*Divider()
+                     .frame(height: 10.0)
+                     .overlay(.white)
+                     */
+                    
+                    Button(action: {gameplay2()}){
+                        ImageView(urlString: gameImage2 as? String)
+                            .padding(.top, -4.0)
+                            .frame(width: 400.0, height: 355)
+                            .opacity(0.4)
+                            .overlay(ImageOverlay(text: $gameTitle2)
+                                .font(.largeTitle)
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color.white))
+                    }
+                    /*Printing without overlay
+                     Text("\(gameTitle2 ?? "Error")")
+                     .foregroundColor(Color.white)
+                     Text("\(peakPlayerCount2 ?? 0)")
+                     .foregroundColor(Color.white)
+                     .font(.body)
+                     .fontWeight(.semibold)
+                     .padding(.bottom, 100.0)
+                     */
+                    
                     
                 }
                 
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/){
-                    ImageView(urlString: gameImage1 as? String)
-                        .padding(.bottom, -4.0)
-                        .frame(width: 400.0, height: 355)
-                        .opacity(/*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/)
-                        .overlay(ImageOverlay(text: $gameTitle1))
-                        .overlay(ImageOverlay(text: $peakPlayerCount1)
-                            .padding(.top, 120.0))
+                Circle()
+                    .frame(width: 100.0, height: 100.0)
+                    .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
+                
+                Text("VS")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                
+                
+                .navigationDestination(isPresented: $showGameoverView){
+                    GameOverView(score: $score)
                 }
-                /*Printing without overlay
-                Text("\(gameTitle1 ?? "Error")")
-                    .foregroundColor(Color.white)
-                Text("\(peakPlayerCount1 ?? 0)")
-                    .foregroundColor(Color.white)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                */
-
-                
-                /*Divider()
-                    .frame(height: 10.0)
-                    .overlay(.white)
-                    */
-                
-                Button(action: {}){
-                    ImageView(urlString: gameImage2 as? String)
-                        .padding(.top, -4.0)
-                        .frame(width: 400.0, height: 355)
-                        .opacity(/*@START_MENU_TOKEN@*/0.5/*@END_MENU_TOKEN@*/)
-                        .overlay(ImageOverlay(text: $gameTitle2))
-                }
-                /*Printing without overlay
-                Text("\(gameTitle2 ?? "Error")")
-                    .foregroundColor(Color.white)
-                Text("\(peakPlayerCount2 ?? 0)")
-                    .foregroundColor(Color.white)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .padding(.bottom, 100.0)
-                */
-                
-                
             }
-            
-            Circle()
-                .frame(width: 100.0, height: 100.0)
-                .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
-            
-            Text("VS")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(.black)
-            
         }
         
     }
@@ -160,7 +195,9 @@ struct GameView: View {
                 
                 gameTitle1 = receivedGame["title"]
                 gameImage1 = receivedGame["image_url"]
-                peakPlayerCount1 = receivedGame["peakPlayerCount"] as! Int
+                peakPlayerCount1 = receivedGame["peakPlayerCount"]
+                playerCountInt1 = receivedGame["peakPlayerCount"] as! Int
+                
                 
                 //Debug statements
                 print("The title of the first game is: \(gameTitle1 ?? 0)")
@@ -228,7 +265,8 @@ struct GameView: View {
                 
                 gameTitle2 = receivedGame["title"]
                 gameImage2 = receivedGame["image_url"]
-                peakPlayerCount2 = receivedGame["peakPlayerCount"] as! Int
+                peakPlayerCount2 = receivedGame["peakPlayerCount"]
+                playerCountInt2 = receivedGame["peakPlayerCount"] as! Int
                 
                 //Debug statements
                 print("The title of the second game is: \(gameTitle2 ?? 0)")
@@ -245,6 +283,34 @@ struct GameView: View {
             
         }
         task2.resume()
+        
+    }
+    
+    //Game 1 is chosen
+    func gameplay1() {
+            if(playerCountInt1 >= playerCountInt2){
+                
+                getGame2()
+                print("Game 1 is correct!")
+                score += 1
+                
+            }else{showGameoverView = true}
+    }
+    
+    //Game 2 is chosen
+    func gameplay2(){
+        if(playerCountInt1 <= playerCountInt2){
+            
+            gameTitle1 = gameTitle2
+            gameImage1 = gameImage2
+            peakPlayerCount1 = peakPlayerCount2
+            playerCountInt1 = playerCountInt2
+            print("game 2 is correct!")
+            
+            getGame2()
+            score += 1
+            
+        }else{showGameoverView = true}
         
     }
     
