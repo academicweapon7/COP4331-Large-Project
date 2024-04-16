@@ -63,6 +63,14 @@ struct LoginView: View {
                             .cornerRadius(10)
                     }
                     
+                    
+                    Button(action: {UIApplication.shared.open(URL(string: "https://steamguru-77d4152ed074.herokuapp.com/passwordreset")! as URL, options: [:], completionHandler: nil)}){
+                        Text("Forgot Password?")
+                            .foregroundColor(Color(hue: 0.578, saturation: 0.797, brightness: 0.831))
+                            
+                    }
+                    .padding(.top, 20.0)
+                    
                     .navigationDestination(isPresented: $showingLoginScreen){
                         LandingView(username: $username)
                     }
@@ -133,6 +141,11 @@ struct LoginView: View {
                 } else {
                     wrongInput = 2
                 }
+                
+                if(username == ""){
+                    wrongInput = 2
+                }
+                
             } catch {
                 print("error parsing response from POST on /login")
                 return
