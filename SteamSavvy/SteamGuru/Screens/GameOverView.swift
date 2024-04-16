@@ -11,6 +11,7 @@ struct GameOverView: View {
     @State private var showGameView = false
     @State private var showWelcomeView = false
     @Binding var score: Int
+    @Binding var username: String
    
 
     var body: some View {
@@ -55,12 +56,12 @@ struct GameOverView: View {
                     }
                     
                    
-                    
+                    .navigationBarBackButtonHidden(true)
                     .navigationDestination(isPresented: $showGameView){
-                        GameView()
+                        GameView(username: $username)
                     }
                     .navigationDestination(isPresented: $showWelcomeView){
-                        WelcomeView().navigationBarBackButtonHidden()
+                        WelcomeView()
                     }
                 }
             }
@@ -70,9 +71,10 @@ struct GameOverView: View {
 
 struct GameOverPreviewContainer : View {
      @State private var score = 99
+     @State private var username = "RickL"
 
      var body: some View {
-          GameOverView(score: $score)
+          GameOverView(score: $score, username: $username)
      }
 }
 
