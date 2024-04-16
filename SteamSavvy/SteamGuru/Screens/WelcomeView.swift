@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    
+    
+    
     @State private var showLoginView = false
     @State private var showSignUpView = false
+    @State private var continuedAsGuest = false
+    @State private var showGuestView = false
+    @State private var guestUsername = "Guest"
+    
     var body: some View {
         NavigationStack{
             ZStack {
@@ -51,23 +58,45 @@ struct WelcomeView: View {
                             .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
                     }
                     
-                    Button(action: {UIApplication.shared.open(URL(string: "https://steamguru-77d4152ed074.herokuapp.com/passwordreset")! as URL, options: [:], completionHandler: nil)}){
-                        Text("Forgot Password?")
-                            
+                    Button(action: {continuedAsGuest = true}){
+                        Text("Play as Guest")
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .frame(width: 200, height: 15)
+                            .padding()
+                            .background(Color(.darkGray))
+                            .cornerRadius(50)
+                            .shadow(color: Color.black.opacity(0.08), radius: 60, x: 0.0, y: 16)
+                        
+                        
                     }
+                    .alert(isPresented: $continuedAsGuest){
+                                Alert(title: Text("Continue as Guest?"), message: Text("While playing as Guest no score data will be saved"), dismissButton: .default(Text("Sounds Good!"), action: {
+                                    showGuestView = true
+                                })
+                                )
+                            }
+                    
                     .padding(.top, 20.0)
                     
                 }
                 .padding()
             }
+            .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $showLoginView){
                 LoginView()
             }
             .navigationDestination(isPresented: $showSignUpView){
                 SignUpView()	
             }
+            .navigationDestination(isPresented: $showGuestView){
+                LandingView(username: $guestUsername)
+            }
+            
         }
     }
+    
 }
 
 #Preview {
