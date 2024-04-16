@@ -10,6 +10,7 @@ import SwiftUI
 struct LandingView: View {
     @Binding var username: String
     @State private var showGameView = false
+    @State private var showWelcomeView = false
    
     var body: some View {
         NavigationStack{
@@ -50,9 +51,29 @@ struct LandingView: View {
                     }
                     
                    
-                    
+                    .navigationBarBackButtonHidden(true)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button(action: {
+                                showWelcomeView = true
+                            }) {
+                                Image("logout")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30.0)
+                                Text("Log out")
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                                
+                            }
+                        }
+                    }
                     .navigationDestination(isPresented: $showGameView){
-                        GameView()
+                        GameView(username: $username)
+                    }
+                    .navigationDestination(isPresented: $showWelcomeView){
+                        WelcomeView()
                     }
                 }
             }
