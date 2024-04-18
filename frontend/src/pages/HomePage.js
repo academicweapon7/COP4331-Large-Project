@@ -1,25 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Login from '../components/Login';
 import Register from '../components/Register';
 import PageTitle from '../components/PageTitle';
-import Logo from '../components/Logo'
+import Logo from '../components/Logo';
+import Slider from '../components/Slider'; 
 
 const HomePage = () => {
-  return (
-    <div>
-        <PageTitle />
-        <Logo />
-        <div className="container">
-            <div className="row justify-content-center mt-5">
-                <div className="col-md-3">
-                    <Login />
+    const [showLogin, setShowLogin] = useState(true);
+
+    const handleToggleForm = (formType) => {
+        if (formType === 'login') {
+            setShowLogin(true);
+        } else if (formType === 'register') {
+            setShowLogin(false);
+        }
+    };
+
+    return (
+        <div style={{ backgroundColor: '#C6DAD9', height: '100vh' }}>
+            <PageTitle />
+            <Logo />
+            <div className="container" style={{ backgroundColor: '#C6DAD9' }}>
+                <div className="row justify-content-center mt-5">
+                    <div className="col-md-3">
+                        <Slider showLogin={showLogin} handleToggleForm={handleToggleForm} />
+                    </div>
                 </div>
-                <div className="col-md-3">
-                    <Register />
+                <div className="row justify-content-center mt-3">
+                    <div className="col-md-3">
+                        {showLogin ? <Login /> : <Register />}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 };
 

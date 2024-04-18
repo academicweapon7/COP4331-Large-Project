@@ -6,7 +6,7 @@ import Leaderboard from '../components/LeaderBoard';
 const LeaderboardPage = () =>
 {
     return(
-        <div>
+        <div style={{ backgroundColor: '#C6DAD9', height: '100vh' }}>
         <PageTitle />
         <Logo />
         <Leaderboard />

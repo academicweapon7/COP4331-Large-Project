@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PasswordChecklist from 'react-password-checklist';
 import 'bootstrap/dist/css/bootstrap.min.css';
+const crypto = require('crypto');
 
 function Register() {
 
@@ -54,9 +55,11 @@ function Register() {
         var obj = {
             login: registerUsername.value,
             password: password,
-            email: registerEmail.value
+            email: registerEmail.value,
         };
+
         var js = JSON.stringify(obj);
+
         try {
             const response = await fetch(bp.buildPath('api/register'), {
                 method: 'POST',
@@ -82,7 +85,6 @@ function Register() {
             <div className="row justify-content-center">
                 <div id="registerDiv">
                     <form onSubmit={doRegister}>
-                        <h2 className="text-center">Register</h2>
                         <div className="form-group">
                             <input
                                 type="text"

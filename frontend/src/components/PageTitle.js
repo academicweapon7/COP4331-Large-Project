@@ -1,12 +1,11 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function PageTitle() 
-{
+function PageTitle() {
     return (
         <div className="container">
-            <div className="row align-items-start">
-                <div className="col-md-6">
+            <div className="row">
+                <div className="col-md-6 align-self-start">
                     <div className="form-group text-center">
                         <a href="/" className="btn btn-secondary">Home</a>
                     </div>                    
@@ -19,6 +18,6 @@ function PageTitle()
             </div>
         </div>
     );
-};
+}
 
 export default PageTitle;
