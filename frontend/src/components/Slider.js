@@ -2,7 +2,7 @@ import React from 'react';
 
 const Slider = ({ showLogin, handleToggleForm }) => {
     return (
-        <div className="slider">
+        <div className="slider" style={{ display: 'flex', justifyContent: 'center' }}>
             <button
                 className={`btn ${showLogin ? 'active' : ''}`}
                 onClick={() => handleToggleForm('login')}

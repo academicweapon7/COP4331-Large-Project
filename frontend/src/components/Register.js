@@ -4,19 +4,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const crypto = require('crypto');
 
 function Register() {
-
     var bp = require('./Path.js');
 
     const [message, setMessage] = useState('');
-    var registerUsername
-    var registerEmail
-    const [password, setPassword] = useState('')
-    const [passwordAgain, setPasswordAgain] = useState('')
-    
+    var registerUsername;
+    var registerEmail;
+    const [password, setPassword] = useState('');
+    const [passwordAgain, setPasswordAgain] = useState('');
 
     const isValidPassword = (password) => {
-        return password.length >= 8 && /[!@#$%^&*]/.test(password) && /\d/.test(password) && 
-        /[A-Z]/.test(password);
+        return password.length >= 8 && /[!@#$%^&*]/.test(password) && /\d/.test(password) && /[A-Z]/.test(password);
     };
 
     const isValidEmail = (email) => {
@@ -24,7 +21,7 @@ function Register() {
         return regex.test(email);
     };
 
-    const doRegister = async event => {
+    const doRegister = async (event) => {
         event.preventDefault();
 
         // Check if all fields are filled
@@ -32,7 +29,7 @@ function Register() {
             setMessage('Please fill in all fields!');
             return;
         }
-        
+
         // Check if passwords match
         if (password !== passwordAgain) {
             setMessage('Passwords do not match!');
@@ -46,10 +43,9 @@ function Register() {
         }
 
         // Check if email is valid
-        if (!isValidEmail(registerEmail.value))
-        {
-            setMessage('Invalid email!')
-            return
+        if (!isValidEmail(registerEmail.value)) {
+            setMessage('Invalid email!');
+            return;
         }
 
         var obj = {
@@ -64,13 +60,12 @@ function Register() {
             const response = await fetch(bp.buildPath('api/register'), {
                 method: 'POST',
                 body: js,
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
             });
             var res = JSON.parse(await response.text());
             if (!res.error) {
                 setMessage('');
                 window.location.href = '/';
-                
             } else {
                 setMessage(res.error);
             }
@@ -83,54 +78,57 @@ function Register() {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <div id="registerDiv">
-                    <form onSubmit={doRegister}>
-                        <div className="form-group">
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="registerUsername"
-                                placeholder="Username"
-                                ref={(c) => (registerUsername = c)}
-                            />
+                <div className="col-md-12">
+                    <div className="card p-3">
+                        <form onSubmit={doRegister}>
+                            <div className="form-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="registerUsername"
+                                    placeholder="Username"
+                                    ref={(c) => (registerUsername = c)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="Password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="Re-enter Password"
+                                    onChange={(e) => setPasswordAgain(e.target.value)}
+                                />
+                                <PasswordChecklist
+                                    rules={['minLength', 'specialChar', 'number', 'capital', 'match']}
+                                    minLength={8}
+                                    value={password}
+                                    valueAgain={passwordAgain}
+                                    onChange={(isValid) => {}}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="registerEmail"
+                                    placeholder="Email"
+                                    ref={(c) => (registerEmail = c)}
+                                />
+                            </div>
+                            <div className="form-group text-center">
+                                <button type="submit" className="btn btn-primary">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </form>
+                        <div className="red-text" id="registerResult">
+                            {message}
                         </div>
-                        <div className="form-group">
-                            <input type="password"
-                                className="form-control"
-                                placeholder="Password"
-                                onChange={e => setPassword(e.target.value)}/>
-                            <input type="password"
-                                className="form-control"
-                                placeholder="Re-enter Password"
-                                onChange={e => setPasswordAgain(e.target.value)}/>
-                            <PasswordChecklist
-                                rules={["minLength","specialChar","number","capital","match"]}
-                                minLength={8}
-                                value={password}
-                                valueAgain={passwordAgain}
-                                onChange={(isValid) => {}}
-			                />
-                        </div>
-                        <div className="form-group">
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="registerEmail"
-                                placeholder="Email"
-                                ref={(c) => (registerEmail = c)}
-                            />
-                        </div>
-                        <div className="form-group text-center">
-                            <button
-                                type="submit"
-                                className="btn btn-primary"
-                            >
-                                Sign Up
-                            </button>
-                        </div>
-                    </form>
-                    <div className="red-text" id="registerResult">
-                        {message}
                     </div>
                 </div>
             </div>

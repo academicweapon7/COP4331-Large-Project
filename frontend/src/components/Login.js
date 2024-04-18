@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Login()
-{
+function Login() {
     var bp = require('./Path.js');
     var loginName;
     var loginPassword;
-    const [message,setMessage] = useState('');
+    const [message, setMessage] = useState('');
 
-    const doLogin = async event =>
-    {
+    const doLogin = async event => {
         event.preventDefault();
 
         if (!loginName.value) {
@@ -22,54 +20,51 @@ function Login()
             return;
         }
 
-        var obj = {login:loginName.value,password:loginPassword.value};
+        var obj = { login: loginName.value, password: loginPassword.value };
         var js = JSON.stringify(obj);
-        try
-        {
+        try {
             const response = await fetch(bp.buildPath('api/login'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' }
             });
             var res = JSON.parse(await response.text());
-            if(!res.error)
-            {
-                var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
+            if (!res.error) {
+                var user = { firstName: res.firstName, lastName: res.lastName, id: res.id };
                 localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
                 window.location.href = '/leaderboard';
-            }
-            else
-            {
+            } else {
                 setMessage(res.error);
             }
-        }
-        catch(e)
-        {
+        } catch (e) {
             alert(e.toString());
             return;
         }
     };
 
-    return(
-
+    return (
         <div className="container">
             <div className="row justify-content-center">
-                <form onSubmit={doLogin}>
-                        <div className="form-group">
-                            <input type="text" className="form-control" id="loginName" placeholder="Username" ref={(c) => loginName = c} />
-                        </div>
-                        <div className="form-group text-center">
-                            <input type="password" className="form-control" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} />
-                        </div>
-                        <div className="form-group text-center">
-                            <button type="submit" className="btn btn-primary mx-auto d-block">Login</button>
-                        </div>
-                        <div className="form-group text-center">
-                            <a href="/passwordreset" className="btn btn-secondary">Reset Password</a>
-                        </div>
-                </form>
-                <div id="loginResult" className="red-text">{message}</div>
+                <div className="col-md-12">
+                    <div className="card p-3">
+                        <form onSubmit={doLogin}>
+                            <div className="form-group">
+                                <input type="text" className="form-control" id="loginName" placeholder="Username" ref={(c) => loginName = c} />
+                            </div>
+                            <div className="form-group text-center">
+                                <input type="password" className="form-control" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} />
+                            </div>
+                            <div className="form-group text-center">
+                                <button type="submit" className="btn btn-primary mx-auto d-block">Login</button>
+                            </div>
+                            <div className="form-group text-center">
+                                <a href="/passwordreset" className="btn btn-secondary">Reset Password</a>
+                            </div>
+                        </form>
+                        <div id="loginResult" className="red-text">{message}</div> {/* Moved inside the card */}
+                    </div>
+                </div>
             </div>
         </div>
     );
