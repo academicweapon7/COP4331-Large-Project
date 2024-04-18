@@ -3,19 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function PageTitle() {
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col-md-6 align-self-start">
-                    <div className="form-group text-center">
-                        <a href="/" className="btn btn-secondary">Home</a>
-                    </div>                    
-                </div>
-            </div>
-            <div className="row justify-content-center">
-                <div className="col-md-6 text-center">
-                    <h1>Steam Guru</h1>
-                </div>
-            </div>
+        <div>
+            <h1 style={{ color: 'white' }}>Steam Guru</h1>
+            <a href="/" className="btn btn-secondary">Home</a>
         </div>
     );
 }

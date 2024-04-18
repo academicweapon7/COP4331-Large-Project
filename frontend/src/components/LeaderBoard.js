@@ -42,7 +42,8 @@ const Leaderboard = () => {
     
     return(
         <div className='container text-center'>
-                <h2>Leaderboard</h2>
+                <h2 style={{ color: 'white' }}>Leaderboard</h2>
+
             <table className='table table-striped table-dark table-bordered'>
                 <thead clas = "thead-dark">
                     <tr>
