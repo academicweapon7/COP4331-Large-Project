@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PasswordChecklist from 'react-password-checklist';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Register() {
@@ -6,34 +7,53 @@ function Register() {
     var bp = require('./Path.js');
 
     const [message, setMessage] = useState('');
-    let registerEmail, registerLogin, registerPassword;
+    var registerUsername
+    var registerEmail
+    const [password, setPassword] = useState('')
+    const [passwordAgain, setPasswordAgain] = useState('')
+    
+
+    const isValidPassword = (password) => {
+        return password.length >= 8 && /[!@#$%^&*]/.test(password) && /\d/.test(password) && 
+        /[A-Z]/.test(password);
+    };
+
+    const isValidEmail = (email) => {
+        const regex = /^.+@.+\..+$/;
+        return regex.test(email);
+    };
 
     const doRegister = async event => {
         event.preventDefault();
 
-        if (!registerLogin.value && !registerPassword.value && !registerEmail.value) {
-            setMessage('Please fill in all fields');
+        // Check if all fields are filled
+        if (!registerUsername || !password || !registerEmail) {
+            setMessage('Please fill in all fields!');
+            return;
+        }
+        
+        // Check if passwords match
+        if (password !== passwordAgain) {
+            setMessage('Passwords do not match!');
             return;
         }
 
-        if (!registerLogin.value) {
-            setMessage('Username required');
+        // Check if password meets the required criteria
+        if (!isValidPassword(password)) {
+            setMessage('Password does not meet the requirements!');
             return;
         }
 
-        if (!registerPassword.value) {
-            setMessage('Password required');
-            return;
-        }
-
-        if (!registerEmail.value) {
-            setMessage('Email required');
-            return;
+        // Check if email is valid
+        if (!isValidEmail(registerEmail.value))
+        {
+            setMessage('Invalid email!')
+            return
         }
 
         var obj = {
-            login: registerLogin.value,
-            password: registerPassword.value,
+            login: registerUsername.value,
+            password: password,
             email: registerEmail.value
         };
         var js = JSON.stringify(obj);
@@ -60,49 +80,57 @@ function Register() {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                    <div id="registerDiv">
-                        <form onSubmit={doRegister}>
-                            <h2 className="text-center">Register</h2>
-                            <div className="form-group">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="registerLogin"
-                                    placeholder="Username"
-                                    ref={(c) => (registerLogin = c)}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    id="registerPassword"
-                                    placeholder="Password"
-                                    ref={(c) => (registerPassword = c)}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="registerEmail"
-                                    placeholder="Email"
-                                    ref={(c) => (registerEmail = c)}
-                                />
-                            </div>
-                            <div className="form-group text-center">
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary"
-                                >
-                                    Sign Up
-                                </button>
-                            </div>
-                        </form>
-                        <div className="red-text" id="registerResult">
-                            {message}
+                <div id="registerDiv">
+                    <form onSubmit={doRegister}>
+                        <h2 className="text-center">Register</h2>
+                        <div className="form-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="registerUsername"
+                                placeholder="Username"
+                                ref={(c) => (registerUsername = c)}
+                            />
                         </div>
+                        <div className="form-group">
+                            <input type="password"
+                                className="form-control"
+                                placeholder="Password"
+                                onChange={e => setPassword(e.target.value)}/>
+                            <input type="password"
+                                className="form-control"
+                                placeholder="Re-enter Password"
+                                onChange={e => setPasswordAgain(e.target.value)}/>
+                            <PasswordChecklist
+                                rules={["minLength","specialChar","number","capital","match"]}
+                                minLength={8}
+                                value={password}
+                                valueAgain={passwordAgain}
+                                onChange={(isValid) => {}}
+			                />
+                        </div>
+                        <div className="form-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="registerEmail"
+                                placeholder="Email"
+                                ref={(c) => (registerEmail = c)}
+                            />
+                        </div>
+                        <div className="form-group text-center">
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                            >
+                                Sign Up
+                            </button>
+                        </div>
+                    </form>
+                    <div className="red-text" id="registerResult">
+                        {message}
                     </div>
+                </div>
             </div>
         </div>
     );
