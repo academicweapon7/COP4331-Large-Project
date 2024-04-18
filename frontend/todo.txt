@@ -1,10 +1,8 @@
 To-Do List
 
 CRITICAL
-password complexity
 email-verification
 forgot-password
-populate leaderboard
 
 QOL
 show password checkbox
