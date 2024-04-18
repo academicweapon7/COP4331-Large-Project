@@ -1,18 +1,18 @@
 import React from 'react';
 import PageTitle from '../components/PageTitle';
 import Logo from '../components/Logo';
-import LeaderBoard from '../components/LeaderBoard';
+import Leaderboard from '../components/Leaderboard';
 
 
-const LeaderBoardPage = () =>
+const LeaderboardPage = () =>
 {
     return(
         <div>
         <PageTitle />
         <Logo />
-        <LeaderBoard />
+        <Leaderboard />
         </div>
     );
 }
 
-export default LeaderBoardPage;
+export default LeaderboardPage;

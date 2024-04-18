@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from './pages/HomePage';
-import LeaderBoardPage from './pages/LeaderBoardPage';
+import LeaderboardPage from './pages/LeaderboardPage';
 import PasswordResetPage from './pages/PasswordResetPage';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
         <BrowserRouter>
         <Routes>
         <Route path="/" index element={<HomePage />} />
-        <Route path="/leaderboard" index element={<LeaderBoardPage />} />
+        <Route path="/leaderboard" index element={<LeaderboardPage />} />
         <Route path="/passwordreset" index element={<PasswordResetPage />} />
         </Routes>
         </BrowserRouter>

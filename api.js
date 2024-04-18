@@ -223,7 +223,6 @@ exports.setApp = function ( app, client )
     var rounds_won = -1;
     var error = '';
 
-
     if( results.length > 0) 
     {
       if(score > results[0].highscore)
@@ -290,7 +289,6 @@ exports.setApp = function ( app, client )
 
     var ret = {results:_ret, error:error};
     res.status(200).json(ret);
-
   });
 
 
