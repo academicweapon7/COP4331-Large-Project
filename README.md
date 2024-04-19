@@ -11,11 +11,9 @@ API
 
 Web App
 - Password reset (node mailer)
-- Color scheme
+- Fix background on password reset
+- Resize login container
+- Add about us
 
 Mobile App
 - Color scheme
-- Finish LandingView
-- Add button from LandingView -> GameView
-- GameView UI Format
-- Game Logic
