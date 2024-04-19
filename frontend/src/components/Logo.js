@@ -1,11 +1,26 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Logo = () => 
-{
+const Logo = () => {
+    const logoContainerStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center', 
+        position: 'fixed', 
+        left: '25%', 
+        top: '50%', 
+        transform: 'translate(-50%, -50%)',
+        zIndex: -1,
+        backgroundColor: '#001C2C',
+        padding: '1000px'
+    };
+
+    const imgStyle = {
+        maxWidth: '800px'
+    };
+
     return (
-        <div className="d-flex justify-content-center align-items-center">
-            <img src={require("../images/steamGuru.png")} alt="Logo" className="logo-img img-fluid" style={{ maxWidth: "100px" }} />
+        <div style={logoContainerStyle}>
+            <img src={require("../images/steamGuruUpscaled.png")} alt="Logo" className="logo-img img-fluid" style={imgStyle} />
         </div>
     );
 }

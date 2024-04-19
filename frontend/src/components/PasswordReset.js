@@ -11,10 +11,18 @@ function PasswordReset() {
     };
 
     return (
-        <div className="container">
+        <div className="container vh-100 d-flex justify-content-center align-items-center">
+            <style>
+                {`
+                    .custom-card {
+                        position: relative;
+                        margin-top: -300px; 
+                    }
+                `}
+            </style>
             <div className="row justify-content-center">
-                <div className="col-md-12">
-                    <div className="card p-3">
+                <div className="col-md-5">
+                    <div className="card p-3 custom-card">
                         <form onSubmit={doPasswordReset}>
                             <h2 className="text-center">Password Reset</h2>
                             <p style={{ textAlign: 'justify' }}>
@@ -23,10 +31,10 @@ function PasswordReset() {
                                 Make sure to check your spam!
                             </p>
                             <div className="form-group">
-                                <input type="text" className="form-control" id="loginName" placeholder="Email" ref={(c) => (loginName = c)} />
+                                <input type="text" className="form-control" id="loginName" placeholder="Email" ref={(c) => (loginName = c)} style={{ fontFamily: 'Arial, Helvetica, sans-serif' }} />
                             </div>
                             <div className="form-group text-center">
-                                <button type="submit" className="btn btn-primary mx-auto d-block">Submit </button>
+                                <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>
                             </div>
                             <div className="form-group text-center">
                                 <a href="../" className="btn btn-secondary">Return to Login</a>

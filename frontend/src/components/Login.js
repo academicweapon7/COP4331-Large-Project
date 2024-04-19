@@ -43,26 +43,37 @@ function Login() {
         }
     };
 
+    const formStyle = {
+        position: 'fixed', 
+        left: '70%', 
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+    };
+
+    const inputStyle = {
+        fontFamily: 'sans-serif', 
+    };
+
     return (
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-12">
-                    <div className="card p-3">
+                    <div className="card p-4" style={formStyle}>
                         <form onSubmit={doLogin}>
                             <div className="form-group">
-                                <input type="text" className="form-control" id="loginName" placeholder="Username" ref={(c) => loginName = c} />
+                                <input type="text" className="form-control" id="loginName" placeholder="Username" ref={(c) => loginName = c} style={inputStyle} />
                             </div>
                             <div className="form-group text-center">
-                                <input type="password" className="form-control" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} />
+                                <input type="password" className="form-control" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} style={inputStyle} />
                             </div>
                             <div className="form-group text-center">
                                 <button type="submit" className="btn btn-primary mx-auto d-block">Login</button>
                             </div>
                             <div className="form-group text-center">
-                                <a href="/passwordreset" className="btn btn-secondary">Reset Password</a>
+                                <a href="/passwordreset">Forgot Password?</a>
                             </div>
                         </form>
-                        <div id="loginResult" className="red-text">{message}</div> {/* Moved inside the card */}
+                        <div id="loginResult" className="red-text">{message}</div> 
                     </div>
                 </div>
             </div>

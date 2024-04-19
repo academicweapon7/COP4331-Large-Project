@@ -75,11 +75,22 @@ function Register() {
         }
     };
 
+    const formStyle = {
+        position: 'fixed', 
+        left: '70%', 
+        top: '60%', 
+        transform: 'translate(-50%, -50%)',
+    };
+
+    const inputStyle = {
+        fontFamily: 'sans-serif', 
+    };
+
     return (
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-12">
-                    <div className="card p-3">
+                    <div className="card p-3" style={formStyle}>
                         <form onSubmit={doRegister}>
                             <div className="form-group">
                                 <input
@@ -88,6 +99,7 @@ function Register() {
                                     id="registerUsername"
                                     placeholder="Username"
                                     ref={(c) => (registerUsername = c)}
+                                    style={inputStyle} 
                                 />
                             </div>
                             <div className="form-group">
@@ -96,12 +108,14 @@ function Register() {
                                     className="form-control"
                                     placeholder="Password"
                                     onChange={(e) => setPassword(e.target.value)}
+                                    style={inputStyle} 
                                 />
                                 <input
                                     type="password"
                                     className="form-control"
                                     placeholder="Re-enter Password"
                                     onChange={(e) => setPasswordAgain(e.target.value)}
+                                    style={inputStyle} 
                                 />
                                 <PasswordChecklist
                                     rules={['minLength', 'specialChar', 'number', 'capital', 'match']}
@@ -118,6 +132,7 @@ function Register() {
                                     id="registerEmail"
                                     placeholder="Email"
                                     ref={(c) => (registerEmail = c)}
+                                    style={inputStyle} 
                                 />
                             </div>
                             <div className="form-group text-center">

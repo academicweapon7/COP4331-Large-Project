@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import Login from '../components/Login';
 import Register from '../components/Register';
-import PageTitle from '../components/PageTitle';
+import CustomTitle from '../components/CustomTitle';
 import Logo from '../components/Logo';
 import Slider from '../components/Slider'; 
+import Navigation from '../components/Navigation'; 
+
+import '../styles.css';
 
 const HomePage = () => {
     const [showLogin, setShowLogin] = useState(true);
@@ -17,10 +20,11 @@ const HomePage = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#001C2C', height: '100vh' }}>
-            <PageTitle />
+        <div>
+            <Navigation />
             <Logo />
-            <div className="container" style={{ backgroundColor: '#001C2C' }}>
+            <CustomTitle />
+            <div className="container">
                 <div className="row justify-content-center mt-5">
                     <div className="col-md-3">
                         <Slider showLogin={showLogin} handleToggleForm={handleToggleForm} />

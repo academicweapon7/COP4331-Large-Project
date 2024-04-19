@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'Venite Adoremus Straight';
+    src: url('fonts/VeniteAdoremusStraight-Yzo6v.ttf') format('truetype'); 
+    font-weight: normal; 
+    font-style: normal; 
+  }
+
+body {
+    font-family: 'Venite Adoremus Straight', sans-serif;
+}
+
+@font-face {
+  font-family: 'Venite Adoremus';
+  src: url('fonts/VeniteAdoremus-rgRBA.ttf') format('truetype'); 
+  font-weight: normal; 
+  font-style: normal; 
+}
+
+h1 {
+  font-family: 'Venite Adoremus', sans-serif;
+}
+
