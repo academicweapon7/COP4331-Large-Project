@@ -25,7 +25,8 @@ exports.setApp = function ( app, client )
     }
     else 
     {
-      const newUser = {email:email,login:login,password:password,highscore:0,rounds_played:0,rounds_won:0,streak:0,verified:false};
+      const randomNumber = Math.floor(Math.random() * 100000);
+      const newUser = {email:email,login:login,password:password,highscore:0,rounds_played:0,rounds_won:0,streak:0,verified:false,verif_code:randomNumber};
       var error = '';
 
       try
@@ -84,17 +85,18 @@ exports.setApp = function ( app, client )
 
   app.post('/api/verifyaccount', async(req, res, next) =>
   {
-    //incoming: id
-    //outgoing: error
+    //incoming: email, verif_code
+    //outgoing: verif_success, error
 
-    const { id } = req.body;
+    const { email, verif_code } = req.body;
 
-    const {ObjectId} = require('mongodb');
-    var o_id = new ObjectId(id);
+    //const {ObjectId} = require('mongodb');
+    //var o_id = new ObjectId(id);
 
     const db = client.db("Database");
-    const results = await db.collection('Users').find({_id:o_id}).toArray();
-
+    const results = await db.collection('Users').find({email:email}).toArray();
+    
+    var verif_success = false;
     var error = '';
 
     if( results.length > 0 ) 
@@ -105,9 +107,11 @@ exports.setApp = function ( app, client )
       }
       else
       {
-        try {
+        if (verif_code == results[0].verif_code) 
+        {
+          try {
             await db.collection("Users").updateOne(
-              { _id:o_id },
+              { email:email },
               { $set: { verified:true } }
             );
           } 
@@ -115,7 +119,47 @@ exports.setApp = function ( app, client )
           {
             error = e.toString();
           }
+          verif_success = true;
+        }
+        else 
+        {
+          error = "Verification code does not match.";
+        }
       }
+    }
+    else 
+    {
+      error = "User not found.";
+    }
+
+    var ret = { verif_success:verif_success, error:error };
+    res.status(200).json(ret);
+  });
+
+
+  app.post('/api/changepassword', async (req, res, next) => {
+    //incoming: email, new_password
+    //outgoing: error
+
+    const { email, new_password } = req.body;
+
+    const db = client.db("Database");
+    const results = await db.collection('Users').find({email:email}).toArray();
+    
+    var error = '';
+
+    if( results.length > 0 ) 
+    {
+      try {
+        await db.collection("Users").updateOne(
+          { email:email },
+          { $set: { password:new_password } }
+        );
+      } 
+      catch (e) 
+      {
+        error = e.toString();
+      }    
     }
     else 
     {
