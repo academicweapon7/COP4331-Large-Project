@@ -11,7 +11,7 @@ API
 
 Web App
 - Password reset (node mailer)
-- Add about us
+- Page Loading
 
 Mobile App
 - Color scheme
