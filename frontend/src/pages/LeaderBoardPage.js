@@ -1,8 +1,8 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
+import Navigation from '../components/Navigation'; 
 import PageTitle from '../components/PageTitle';
 import Leaderboard from '../components/LeaderBoard';
-import Navigation from '../components/Navigation'; 
 import '../styles.css';
 
 const LeaderboardPage = () => {

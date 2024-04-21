@@ -1,11 +1,11 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import Navigation from '../components/Navigation';
 import PageTitle from '../components/PageTitle';
-import PasswordReset from '../components/PasswordReset';
+import Navigation from '../components/Navigation';
+import AboutUs from '../components/AboutUs';
 import '../styles.css';
 
-const PasswordResetPage = () => {
+const AboutUsPage = () => {
     return (
         <div className="home-page">
             <Grid container spacing={4}>
@@ -16,11 +16,11 @@ const PasswordResetPage = () => {
                     <PageTitle />
                 </Grid>
                 <Grid item xs={12}>
-                    <PasswordReset />
+                    <AboutUs />
                 </Grid>
             </Grid>
         </div>
     );
 };
   
-export default PasswordResetPage;
+export default AboutUsPage;
