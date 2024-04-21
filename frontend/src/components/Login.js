@@ -43,13 +43,6 @@ function Login() {
         }
     };
 
-    const formStyle = {
-        position: 'fixed', 
-        left: '70%', 
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-    };
-
     const inputStyle = {
         fontFamily: 'sans-serif', 
     };
@@ -57,8 +50,8 @@ function Login() {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-md-12">
-                    <div className="card p-4" style={formStyle}>
+                <div className="col-md-4">
+                    <div className="card p-4">
                         <form onSubmit={doLogin}>
                             <div className="form-group">
                                 <input type="text" className="form-control" id="loginName" placeholder="Username" ref={(c) => loginName = c} style={inputStyle} />

@@ -3,19 +3,13 @@ import React from 'react';
 const Logo = () => {
     const logoContainerStyle = {
         display: 'flex',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        justifyContent: 'center', 
-        position: 'fixed', 
-        left: '25%', 
-        top: '50%', 
-        transform: 'translate(-50%, -50%)',
-        zIndex: -1,
-        backgroundColor: '#001C2C',
-        padding: '1000px'
     };
 
     const imgStyle = {
-        maxWidth: '800px'
+        width: '70%',
+        height: 'auto',
     };
 
     return (

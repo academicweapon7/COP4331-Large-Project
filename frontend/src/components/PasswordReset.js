@@ -11,15 +11,7 @@ function PasswordReset() {
     };
 
     return (
-        <div className="container vh-100 d-flex justify-content-center align-items-center">
-            <style>
-                {`
-                    .custom-card {
-                        position: relative;
-                        margin-top: -300px; 
-                    }
-                `}
-            </style>
+        <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-5">
                     <div className="card p-3 custom-card">

@@ -1,13 +1,8 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 function CustomTitle() {
+
     const titleStyle = {
+        textAlign: 'center', 
         color: 'white',
-        position: 'fixed', 
-        left: '50%', 
-        top: '10%', 
-        width: 'fit-content',
     };
 
     return (

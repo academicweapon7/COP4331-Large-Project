@@ -20,3 +20,16 @@ h1 {
   font-family: 'Venite Adoremus', sans-serif;
 }
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+.home-page {
+  min-height: 100vh; 
+  background-color: #001c2c;
+  display: flex; 
+  flex-direction: column; 
+}

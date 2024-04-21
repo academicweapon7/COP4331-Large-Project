@@ -75,13 +75,6 @@ function Register() {
         }
     };
 
-    const formStyle = {
-        position: 'fixed', 
-        left: '70%', 
-        top: '60%', 
-        transform: 'translate(-50%, -50%)',
-    };
-
     const inputStyle = {
         fontFamily: 'sans-serif', 
     };
@@ -89,8 +82,8 @@ function Register() {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-md-12">
-                    <div className="card p-3" style={formStyle}>
+                <div className="col-md-6">
+                    <div className="card p-4">
                         <form onSubmit={doRegister}>
                             <div className="form-group">
                                 <input

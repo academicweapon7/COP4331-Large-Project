@@ -4,16 +4,10 @@ const Slider = ({ showLogin, handleToggleForm }) => {
     const sliderStyle = {
         display: 'flex',
         justifyContent: 'center',
-        position: 'fixed', 
-        left: '70%', 
-        top: '30%', 
-        transform: 'translate(-50%, -50%)',
-        zIndex: 1, 
     };
 
     const buttonStyle = {
         padding: '12px 24px',
-        fontSize: '16px', 
     };
 
     return (

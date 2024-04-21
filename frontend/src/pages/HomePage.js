@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
+import Grid from '@mui/material/Grid';
+import Navigation from '../components/Navigation';
+import Logo from '../components/Logo';
+import CustomTitle from '../components/CustomTitle';
+import Slider from '../components/Slider';
 import Login from '../components/Login';
 import Register from '../components/Register';
-import CustomTitle from '../components/CustomTitle';
-import Logo from '../components/Logo';
-import Slider from '../components/Slider'; 
-import Navigation from '../components/Navigation'; 
-
 import '../styles.css';
 
 const HomePage = () => {
@@ -20,22 +20,28 @@ const HomePage = () => {
     };
 
     return (
-        <div>
-            <Navigation />
-            <Logo />
-            <CustomTitle />
-            <div className="container">
-                <div className="row justify-content-center mt-5">
-                    <div className="col-md-3">
-                        <Slider showLogin={showLogin} handleToggleForm={handleToggleForm} />
-                    </div>
-                </div>
-                <div className="row justify-content-center mt-3">
-                    <div className="col-md-3">
-                        {showLogin ? <Login /> : <Register />}
-                    </div>
-                </div>
-            </div>
+        <div className="home-page">
+            <Grid container spacing={8}>
+                <Grid item xs={12}>
+                    <Navigation />
+                </Grid>
+                <Grid item xs={4}>
+                    <Logo />
+                </Grid>
+                <Grid item xs={8}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <CustomTitle />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Slider showLogin={showLogin} handleToggleForm={handleToggleForm} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            {showLogin ? <Login /> : <Register />}
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
         </div>
     );
 };
