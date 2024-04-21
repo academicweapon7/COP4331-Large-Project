@@ -11,8 +11,6 @@ API
 
 Web App
 - Password reset (node mailer)
-- Fix background on password reset
-- Resize login container
 - Add about us
 
 Mobile App
