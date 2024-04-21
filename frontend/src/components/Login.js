@@ -28,13 +28,28 @@ function Login() {
                 body: js,
                 headers: { 'Content-Type': 'application/json' }
             });
+
             var res = JSON.parse(await response.text());
-            if (!res.error) {
-                var user = { firstName: res.firstName, lastName: res.lastName, id: res.id };
-                localStorage.setItem('user_data', JSON.stringify(user));
+
+            if (!res.error) 
+            {
+                localStorage.setItem('userId', res.id);
+                localStorage.setItem('userLogin', res.login);
+                localStorage.setItem('userEmail', res.email);
+
                 setMessage('');
-                window.location.href = '/leaderboard';
-            } else {
+
+                if (res.verified)
+                {
+                    window.location.href = '/leaderboard';
+                }
+                else
+                {
+                    window.location.href = '/accountverification';
+                }
+            } 
+            else 
+            {
                 setMessage(res.error);
             }
         } catch (e) {
@@ -66,7 +81,7 @@ function Login() {
                                 <a href="/passwordreset">Forgot Password?</a>
                             </div>
                         </form>
-                        <div id="loginResult" className="red-text">{message}</div> 
+                        <div id="loginResult" className="red-text text-center">{message}</div> 
                     </div>
                 </div>
             </div>

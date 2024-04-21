@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PasswordChecklist from 'react-password-checklist';
 import 'bootstrap/dist/css/bootstrap.min.css';
-const crypto = require('crypto');
 
 function Register() {
     var bp = require('./Path.js');
@@ -63,7 +62,13 @@ function Register() {
                 headers: { 'Content-Type': 'application/json' },
             });
             var res = JSON.parse(await response.text());
+
             if (!res.error) {
+
+                localStorage.setItem('userId', res.id);
+                localStorage.setItem('userLogin', res.login);
+                localStorage.setItem('userEmail', res.email);
+
                 setMessage('');
                 window.location.href = '/';
             } else {
@@ -134,7 +139,7 @@ function Register() {
                                 </button>
                             </div>
                         </form>
-                        <div className="red-text" id="registerResult">
+                        <div className="red-text text-center" id="registerResult">
                             {message}
                         </div>
                     </div>

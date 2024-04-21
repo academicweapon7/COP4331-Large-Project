@@ -5,6 +5,8 @@ import HomePage from './pages/HomePage';
 import AboutUsPage from './pages/AboutUsPage';
 import LeaderboardPage from './pages/LeaderBoardPage';
 import PasswordResetPage from './pages/PasswordResetPage';
+import AccountVerificationPage from './pages/AccountVerificationPage';
+
 
 function App() {
     return (
@@ -12,8 +14,9 @@ function App() {
         <Routes>
         <Route path="/" index element={<HomePage />} />
         <Route path="/aboutus" index element={<AboutUsPage />} />
-        <Route path="/leaderboard" index element={<LeaderboardPage />} />
         <Route path="/passwordreset" index element={<PasswordResetPage />} />
+        <Route path="/accountverification" index element={<AccountVerificationPage />} />
+        <Route path="/leaderboard" index element={<LeaderboardPage />} />
         </Routes>
         </BrowserRouter>
     );

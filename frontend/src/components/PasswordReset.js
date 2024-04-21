@@ -32,7 +32,7 @@ function PasswordReset() {
                                 <a href="../" className="btn btn-secondary">Return to Login</a>
                             </div>
                         </form>
-                        <div id="loginResult" className="red-text">{message}</div>
+                        <div id="loginResult" className="red-text text-center">{message}</div>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
-import PageTitle from '../components/PageTitle';
 import Navigation from '../components/Navigation';
-import AboutUs from '../components/AboutUs';
+import PageTitle from '../components/PageTitle';
+import AccountVerification from '../components/AccountVerification';
+import CreateCode from '../components/CreateCode'; 
 import '../styles.css';
 
-const AboutUsPage = () => {
+const AccountVerificationPage = () => {
+
     return (
         <div className="home-page">
             <Grid container spacing={4}>
@@ -16,11 +18,12 @@ const AboutUsPage = () => {
                     <PageTitle />
                 </Grid>
                 <Grid item xs={12}>
-                    <AboutUs />
+                    <CreateCode />
+                    <AccountVerification />
                 </Grid>
             </Grid>
         </div>
     );
 }
   
-export default AboutUsPage;
+export default AccountVerificationPage;

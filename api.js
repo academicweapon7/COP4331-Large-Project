@@ -25,8 +25,7 @@ exports.setApp = function ( app, client )
     }
     else 
     {
-      const randomNumber = Math.floor(Math.random() * 100000);
-      const newUser = {email:email,login:login,password:password,highscore:0,rounds_played:0,rounds_won:0,streak:0,verified:false,verif_code:randomNumber};
+      const newUser = {email:email,login:login,password:password,highscore:0,rounds_played:0,rounds_won:0,streak:0,verified:false,verif_code:0};
       var error = '';
 
       try
@@ -82,6 +81,34 @@ exports.setApp = function ( app, client )
     res.status(200).json(ret);
   });
 
+  app.post('/api/createcode', async (req, res, next) => {
+    // incoming: email, verif_code
+    // outgoing: error
+  
+    const { email, verif_code } = req.body;
+  
+    const db = client.db("Database");
+    const results = await db.collection('Users').find({ email: email }).toArray();
+  
+    var error = '';
+  
+    if (results.length > 0) {
+      try {
+        await db.collection("Users").updateOne(
+          { email: email },
+          { $set: { verif_code: verif_code } }
+        );
+      } catch (e) {
+        error = e.toString();
+      }
+    } else {
+      error = "User not found.";
+    }
+  
+    var ret = { error: error };
+    res.status(200).json(ret);
+  });
+  
 
   app.post('/api/verifyaccount', async(req, res, next) =>
   {
@@ -206,46 +233,27 @@ exports.setApp = function ( app, client )
   });
 
 
-  app.post('/api/login', async (req, res, next) => 
-  {
+  app.post('/api/login', async (req, res, next) => {
     // incoming: login, password
-    // outgoing: id, firstName, lastName, error
-    
-    var error = '';
+    // outgoing: id, login, highscore, rounds_played, rounds_won, streak, verified, verif_code, error
 
     const { login, password } = req.body;
 
     const db = client.db("Database");
-    const results = await db.collection('Users').find({login:login,password:password}).toArray();
-
-    var id = -1;
-    var username = '';
-    var hs = -1;
-    var rounds_played = -1;
-    var rounds_won = -1;
-    var streak = -1;
+    const results = await db.collection('Users').find({ login: login, password: password }).toArray();
 
     var ret;
+    if (results.length > 0) {
+        const { _id, email, login, highscore, rounds_played, rounds_won, streak, verified, verif_code } = results[0]; // Destructure user data
+        ret = { id: _id, email, login, highscore, rounds_played, rounds_won, streak, verified, verif_code, error: '' };
 
-    if( results.length > 0 )
-    {
-      id = results[0]._id;
-      username = results[0].login;
-      hs = results[0].highscore;
-      rounds_played = results[0].rounds_played;
-      rounds_won = results[0].rounds_won;
-      streak = results[0].streak;
-
-      
-    }
-    else 
-    {
-      error = "Login/Password incorrect";
+    } else {
+        ret = { error: "Login/Password incorrect" };
     }
 
-    ret = { id:id, login:username, highscore:hs, rounds_played:rounds_played, rounds_won:rounds_won, streak:streak, error:error};
     res.status(200).json(ret);
-  });
+});
+
 
   
   app.post('/api/getgame', async (req, res, next) =>
