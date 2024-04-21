@@ -82,7 +82,7 @@ function Register() {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <div className="col-md-6">
+                <div className="col-md-8">
                     <div className="card p-4">
                         <form onSubmit={doRegister}>
                             <div className="form-group">

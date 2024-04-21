@@ -3,7 +3,7 @@ import React from 'react';
 const Logo = () => {
     const logoContainerStyle = {
         display: 'flex',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
     };
 
