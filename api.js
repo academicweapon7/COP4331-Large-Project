@@ -254,6 +254,39 @@ exports.setApp = function ( app, client )
     res.status(200).json(ret);
   });
 
+  app.post('/api/regenverif', async (req, res, next) => {
+    //incoming: email
+    //outgoing: new_code, error
+
+    const { email } = req.body;
+
+    const db = client.db("Database");
+    const results = await db.collection('Users').find({email:email}).toArray();
+    
+    var error = '';
+    const randomNumber = Math.floor(Math.random() * 100000);
+
+    if( results.length > 0 ) 
+    {
+      try {
+        await db.collection("Users").updateOne(
+          { email:email },
+          { $set: { verif_code:randomNumber } }
+        );
+      } 
+      catch (e) 
+      {
+        error = e.toString();
+      }    
+    }
+    else 
+    {
+      error = "User not found.";
+    }
+
+    var ret = { new_code:randomNumber, error:error };
+    res.status(200).json(ret);
+  });
 
   app.post('/api/deleteaccount', async(req, res, next) =>
   {
@@ -358,17 +391,17 @@ exports.setApp = function ( app, client )
 
   app.post('/api/gameover', async (req, res, next) =>
   {
-    // incoming: id, score
+    // incoming: login, score
     // outgoing: highscore, rounds_played, rounds_won, error
 
-    const { id, score } = req.body;
+    const { login, score } = req.body;
 
     
-    const {ObjectId} = require('mongodb');
-    var o_id = new ObjectId(id);
+    //const {ObjectId} = require('mongodb');
+    //var o_id = new ObjectId(id);
 
     const db = client.db("Database");
-    const results = await db.collection('Users').find({_id:o_id}).toArray();
+    const results = await db.collection('Users').find({login:login}).toArray();
 
     var ret;
     var highscore = -1;
