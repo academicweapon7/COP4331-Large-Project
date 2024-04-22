@@ -1,11 +1,17 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Navigation() {
+function Navigation() 
+{
+    const location = useLocation();
+    const showAccountLink = location.pathname === '/leaderboard';
+
     return (
         <div>
-            <a href="/" className="btn btn-secondary">Home</a>
-            <a href="/aboutus" className="btn btn-secondary">About Us</a>
+            <Link to="/" className="btn btn-secondary">Home</Link>
+            <Link to="/aboutus" className="btn btn-secondary">About Us</Link>
+            {showAccountLink && <Link to="/account" className="btn btn-secondary">Account</Link>}
         </div>
     );
 }

@@ -46,38 +46,24 @@ exports.setApp = function ( app, client )
 
   });
 
+  app.post('/api/login', async (req, res, next) => {
+    // incoming: login, password
+    // outgoing: id, login, highscore, rounds_played, rounds_won, streak, verified, verif_code, error
 
-  app.post('/api/deleteaccount', async(req, res, next) =>
-  {
-    //incoming: id
-    //outgoing: error
-
-    const { id } = req.body;
-
-    const {ObjectId} = require('mongodb');
-    var o_id = new ObjectId(id);
+    const { login, password } = req.body;
 
     const db = client.db("Database");
-    const results = await db.collection('Users').find({_id:o_id}).toArray();
+    const results = await db.collection('Users').find({ login: login, password: password }).toArray();
 
-    var error = '';
+    var ret;
+    if (results.length > 0) {
+        const { _id, email, login, highscore, rounds_played, rounds_won, streak, verified, verif_code } = results[0]; // Destructure user data
+        ret = { id: _id, email, login, highscore, rounds_played, rounds_won, streak, verified, verif_code, error: '' };
 
-    if( results.length > 0 ) 
-    {
-      try {
-        db.collection("Users").deleteOne({_id:o_id});
-      }
-      catch (e) 
-      {
-        error = e.toString();
-      }
-    }
-    else 
-    {
-      error = "User not found.";
+    } else {
+        ret = { error: "Login/Password incorrect" };
     }
 
-    var ret = { error:error };
     res.status(200).json(ret);
   });
 
@@ -108,7 +94,6 @@ exports.setApp = function ( app, client )
     var ret = { error: error };
     res.status(200).json(ret);
   });
-  
 
   app.post('/api/verifyaccount', async(req, res, next) =>
   {
@@ -122,7 +107,7 @@ exports.setApp = function ( app, client )
 
     const db = client.db("Database");
     const results = await db.collection('Users').find({email:email}).toArray();
-    
+  
     var verif_success = false;
     var error = '';
 
@@ -163,6 +148,146 @@ exports.setApp = function ( app, client )
     res.status(200).json(ret);
   });
 
+  app.post('/api/fetchaccount', async (req, res, next) => {
+    // incoming: email
+    // outgoing: id, email, login, password, highscore, rounds_played, rounds_won, streak, verified, verif_code, error
+
+    const { email } = req.body;
+    const db = client.db("Database");
+    let ret = {}; // Declare ret variable
+    let error = '';
+
+    try {
+        if (email !== undefined && email !== '') {
+            const results = await db.collection('Users').find({ email: email }).toArray();
+
+            if (results && results.length > 0) {
+                const {
+                    _id,
+                    email: userEmail,
+                    login,
+                    password,
+                    highscore,
+                    rounds_played,
+                    rounds_won,
+                    streak,
+                    verified,
+                    verif_code
+                } = results[0];
+                ret = {
+                    id: _id,
+                    email: userEmail,
+                    login,
+                    password,
+                    highscore,
+                    rounds_played,
+                    rounds_won,
+                    streak,
+                    verified,
+                    verif_code,
+                    error: ''
+                };
+            } else {
+                error = 'Account not found.';
+            }
+        } else {
+            error = 'Please provide email.';
+        }
+    } catch (err) {
+        error = 'Internal server error.';
+        console.error(err); // Log the error for debugging purposes
+    }
+
+    if (error) {
+        ret = { error }; // Ensure consistent error response format
+    }
+
+    res.status(200).json(ret);
+  });
+
+  function isComplexPassword(password) {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  }
+
+  app.post('/api/editaccount', async (req, res, next) => {
+    // incoming: userId, username, email, password
+    // outgoing: error
+
+    const { userId, username, email, password } = req.body;
+
+    const { ObjectId } = require('mongodb');
+    var o_id = new ObjectId(userId);
+
+    const db = client.db("Database");
+    const results = await db.collection('Users').find({ _id: o_id }).toArray();
+
+    var error = '';
+
+    if (results.length > 0) {
+        const existingUser = results[0];
+
+        const existingUsername = await db.collection('Users').findOne({ login: username });
+        const existingEmail = await db.collection('Users').findOne({ email: email });
+
+        if (existingUsername && existingUsername._id.toString() !== userId) {
+            error = "Username already in use.";
+        } else if (existingEmail && existingEmail._id.toString() !== userId) {
+            error = "Email already in use.";
+        } else if (!isComplexPassword(password)) {
+            error = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+        } else {
+            try {
+                await db.collection("Users").updateOne(
+                    { _id: o_id },
+                    { $set: { login: username, email: email, password: password } }
+                );
+            } catch (e) {
+                error = e.toString();
+            }
+        }
+    } else {
+        error = "User not found.";
+    }
+
+    var ret = { error: error };
+    res.status(200).json(ret);
+  });
+
+
+  app.post('/api/deleteaccount', async(req, res, next) =>
+  {
+    //incoming: id
+    //outgoing: error
+
+    const { id } = req.body;
+
+    const {ObjectId} = require('mongodb');
+    var o_id = new ObjectId(id);
+
+    const db = client.db("Database");
+    const results = await db.collection('Users').find({_id:o_id}).toArray();
+
+    var error = '';
+
+    if( results.length > 0 ) 
+    {
+      try {
+        db.collection("Users").deleteOne({_id:o_id});
+      }
+      catch (e) 
+      {
+        error = e.toString();
+      }
+    }
+    else 
+    {
+      error = "User not found.";
+    }
+
+    var ret = { error:error };
+    res.status(200).json(ret);
+  });
 
   app.post('/api/changepassword', async (req, res, next) => {
     //incoming: email, new_password
@@ -172,7 +297,7 @@ exports.setApp = function ( app, client )
 
     const db = client.db("Database");
     const results = await db.collection('Users').find({email:email}).toArray();
-    
+  
     var error = '';
 
     if( results.length > 0 ) 
@@ -196,65 +321,6 @@ exports.setApp = function ( app, client )
     var ret = { error:error };
     res.status(200).json(ret);
   });
-
-
-  app.post('/api/regenverif', async (req, res, next) => {
-    //incoming: email
-    //outgoing: new_code, error
-
-    const { email } = req.body;
-
-    const db = client.db("Database");
-    const results = await db.collection('Users').find({email:email}).toArray();
-    
-    var error = '';
-    const randomNumber = Math.floor(Math.random() * 100000);
-
-    if( results.length > 0 ) 
-    {
-      try {
-        await db.collection("Users").updateOne(
-          { email:email },
-          { $set: { verif_code:randomNumber } }
-        );
-      } 
-      catch (e) 
-      {
-        error = e.toString();
-      }    
-    }
-    else 
-    {
-      error = "User not found.";
-    }
-
-    var ret = { new_code:randomNumber, error:error };
-    res.status(200).json(ret);
-  });
-
-
-  app.post('/api/login', async (req, res, next) => {
-    // incoming: login, password
-    // outgoing: id, login, highscore, rounds_played, rounds_won, streak, verified, verif_code, error
-
-    const { login, password } = req.body;
-
-    const db = client.db("Database");
-    const results = await db.collection('Users').find({ login: login, password: password }).toArray();
-
-    var ret;
-    if (results.length > 0) {
-        const { _id, email, login, highscore, rounds_played, rounds_won, streak, verified, verif_code } = results[0]; // Destructure user data
-        ret = { id: _id, email, login, highscore, rounds_played, rounds_won, streak, verified, verif_code, error: '' };
-
-    } else {
-        ret = { error: "Login/Password incorrect" };
-    }
-
-    res.status(200).json(ret);
-});
-
-
   
   app.post('/api/getgame', async (req, res, next) =>
   {

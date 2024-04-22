@@ -6,7 +6,7 @@ import AboutUsPage from './pages/AboutUsPage';
 import LeaderboardPage from './pages/LeaderBoardPage';
 import PasswordResetPage from './pages/PasswordResetPage';
 import AccountVerificationPage from './pages/AccountVerificationPage';
-
+import AccountPage from './pages/AccountPage';
 
 function App() {
     return (
@@ -17,6 +17,7 @@ function App() {
         <Route path="/passwordreset" index element={<PasswordResetPage />} />
         <Route path="/accountverification" index element={<AccountVerificationPage />} />
         <Route path="/leaderboard" index element={<LeaderboardPage />} />
+        <Route path="/account" index element={<AccountPage />} />
         </Routes>
         </BrowserRouter>
     );
