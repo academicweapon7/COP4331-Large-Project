@@ -424,7 +424,7 @@ exports.setApp = function ( app, client )
       
       try {
         await db.collection("Users").updateOne(
-          { _id:o_id },
+          { login:login },
           { $set: { highscore:highscore, rounds_played:rounds_played, rounds_won:rounds_won } }
         );
       } 
