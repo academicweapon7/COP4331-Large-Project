@@ -10,8 +10,10 @@ API
 - delete user account
 
 Web App
-- Password reset (node mailer)
+- Password Reset / Verification Code (node mailer)
+- Carousel of Games Up/Down
 - Page Loading
+- Delete Account
 
 Mobile App
 - Color scheme
