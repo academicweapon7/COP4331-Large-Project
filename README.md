@@ -14,6 +14,7 @@ Web App
 - Carousel of Games Up/Down
 - Page Loading
 - Delete Account
+- Sign out clear local storage
 
 Mobile App
 - Color scheme
