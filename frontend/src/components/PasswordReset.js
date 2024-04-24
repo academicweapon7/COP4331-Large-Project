@@ -2,13 +2,38 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function PasswordReset() {
-    var loginName;
+    var bp = require('./Path.js');
+    var userEmail;
     const [message, setMessage] = useState('');
 
     const doPasswordReset = async (event) => {
         event.preventDefault();
-        setMessage('TO DO!');
+    
+        const emailInput = document.getElementById('userEmail');
+        const email = emailInput.value.trim(); 
+    
+        const obj = { email }; 
+        const js = JSON.stringify(obj);
+    
+        try {
+            const response = await fetch(bp.buildPath('api/forgotpassword'), {
+                method: 'POST',
+                body: js,
+                headers: { 'Content-Type': 'application/json' },
+            });
+            const res = await response.json();
+    
+            if (!res.error) {
+                setMessage('');
+            } else {
+                setMessage(res.error);
+            }
+        } catch (e) {
+            alert(e.toString());
+            return;
+        }
     };
+    
 
     return (
         <div className="container">
@@ -23,7 +48,7 @@ function PasswordReset() {
                                 Make sure to check your spam!
                             </p>
                             <div className="form-group">
-                                <input type="text" className="form-control" id="loginName" placeholder="Email" ref={(c) => (loginName = c)} style={{ fontFamily: 'Arial, Helvetica, sans-serif' }} />
+                                <input type="text" className="form-control" id="userEmail" placeholder="Email" ref={(c) => (userEmail = c)} style={{ fontFamily: 'Arial, Helvetica, sans-serif' }} />
                             </div>
                             <div className="form-group text-center">
                                 <button type="submit" className="btn btn-primary mx-auto d-block">Submit</button>

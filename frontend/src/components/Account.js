@@ -4,9 +4,12 @@ import EditAccount from './EditAccount';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Account() {
+    var bp = require('./Path.js');
     const [accountData, setAccountData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+    const [showNewPasswords, setShowNewPasswords] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -15,7 +18,7 @@ function Account() {
                 setAccountData(data);
                 setIsLoading(false);
             } catch (error) {
-                setError('Error fetching account data.');
+                setError('Error: fetching account data');
                 setIsLoading(false);
             }
         };
@@ -33,23 +36,46 @@ function Account() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const {id, login , password, newPassword} = accountData;
+
+        var updatedPassword = password;
+
+        if (newPassword !== null && newPassword !== '' && newPassword !== undefined)
+        {
+            updatedPassword = newPassword;
+        }
+
+        var obj = { userId: id, username: login, password: updatedPassword };
+        var js = JSON.stringify(obj);
+
         try {
-            const { login, email, password } = accountData;
-            const response = await EditAccount(accountData.id, login, email, password);
-            if (!response.error) {
+            const response = await fetch(bp.buildPath('api/editaccount'), {
+                method: 'POST',
+                body: js,
+                headers: { 'Content-Type': 'application/json' }
+            });
 
+            if (!response.error) 
+            {
                 localStorage.setItem('userLogin', accountData.login);
-                localStorage.setItem('userEmail', accountData.email);
-
                 window.location.reload();
-
-                console.log('Account edited successfully:', response);
-            } else {
+            } 
+            else 
+            {
                 setError(response.error);
             }
         } catch (error) {
-            setError('Error editing account.');
+            setError('Error: Unable to Change');
         }
+    };
+
+    const toggleShowCurrentPassword = () => {
+        setShowCurrentPassword((prevShowCurrentPassword) => !prevShowCurrentPassword);
+    };
+
+    const toggleShowNewPasswords = () => {
+        setShowNewPasswords((prevShowNewPasswords) => !prevShowNewPasswords);
     };
 
     const inputStyle = {
@@ -58,14 +84,13 @@ function Account() {
 
     return (
         <div className="row justify-content-center">
-            <div className="col-md-2">
+            <div className="col-md-3">
                 <div className="card p-4">
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         {isLoading ? (
                             <p>Loading...</p>
                         ) : (
                             <form onSubmit={handleSubmit}>
-                                {error && <p style={{ color: 'red' }}>Error: {error}</p>}
                                 <div className="form-group">
                                     <label htmlFor="username">Username:</label>
                                     <input
@@ -79,21 +104,38 @@ function Account() {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="email">Email:</label>
+                                    <label htmlFor="oldPassword">Current Password:</label>
                                     <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        value={accountData?.email || ''}
-                                        onChange={handleInputChange} 
+                                        type={showCurrentPassword ? 'text' : 'password'}
+                                        id="oldPassword"
+                                        name="oldPassword"
+                                        value={accountData?.password || ''}
+                                        className="form-control"
+                                        style={inputStyle}
+                                        readOnly
+                                    />
+                                    <button type="button" onClick={toggleShowCurrentPassword} className="btn btn-secondary btn-sm mt-2">{showCurrentPassword ? 'Hide' : 'Show'}</button>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="newPassword">New Password:</label>
+                                    <input
+                                        type={showNewPasswords ? 'text' : 'password'}
+                                        id="newPassword"
+                                        name="newPassword"
+                                        value={accountData?.newPassword || ''}
+                                        onChange={handleInputChange}
                                         className="form-control"
                                         style={inputStyle}
                                     />
+                                    <button type="button" onClick={toggleShowNewPasswords} className="btn btn-secondary btn-sm mt-2">{showNewPasswords ? 'Hide' : 'Show'}</button>
                                 </div>
                                 <div className="form-group text-center">
                                     <div>
                                         <button type="submit" className="btn btn-primary btn-block">Save</button>
                                     </div>
+                                </div>
+                                <div className="form-group text-center">
+                                    {error && <p style={{ color: 'red' }}>{error}</p>}
                                 </div>
                             </form>
                         )}
