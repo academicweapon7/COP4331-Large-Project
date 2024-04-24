@@ -1,5 +1,6 @@
 require('express');
 require('mongodb');
+const nodemailer = require('nodemailer');
 
 exports.setApp = function ( app, client )
 {
@@ -7,6 +8,35 @@ exports.setApp = function ( app, client )
   {
     // incoming: email, login, password
     // outgoing: error
+
+
+    function generateVerificationCode() {
+      return Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit random number
+    }
+
+    async function sendVerificationEmail(email, verificationCode) {
+      let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+              user: 'ldubuget@gmail.com',
+              pass: 'brdg pbwq bnil qwct'
+          }
+      });
+  
+      let mailOptions = {
+          from: 'ldubuget@gmail.com',
+          to: email,
+          subject: 'Verification Code for Your Account',
+          text: `Your verification code is: ${verificationCode}`
+      };
+  
+      try {
+          let info = await transporter.sendMail(mailOptions);
+          console.log('Email sent:', info.response);
+      } catch (error) {
+          console.log('Error sending email:', error);
+      }
+  }
 
     const { email, login, password } = req.body;
 
@@ -25,13 +55,25 @@ exports.setApp = function ( app, client )
     }
     else 
     {
-      const newUser = {email:email,login:login,password:password,highscore:0,rounds_played:0,rounds_won:0,streak:0,verified:false,verif_code:0};
+      const verifCode = generateVerificationCode();
+
+      const newUser = {
+        email: email,
+        login: login,
+        password: password,
+        highscore: 0,
+        rounds_played: 0,
+        rounds_won: 0,
+        streak: 0,
+        verified: false,
+        verif_code: verifCode};
       var error = '';
 
       try
       {
         //const db = client.db("Database");
         const result = db.collection('Users').insertOne(newUser);
+        sendVerificationEmail(email, verifCode);
       }
       catch(e)
       {
@@ -40,7 +82,6 @@ exports.setApp = function ( app, client )
 
       var ret = { error: error };
     }
-
     
     res.status(200).json(ret);
 

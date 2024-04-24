@@ -1,11 +1,10 @@
 To-Do List
 
 CRITICAL
-email-verification
 forgot-password
-
-QOL
-show password checkbox
+search by username
+display current user position
+update game images
 
 display user on score board
     if not top 10, display at the bottom of leaderboard
