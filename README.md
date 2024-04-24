@@ -10,7 +10,8 @@ API
 - delete user account
 
 Web App
-- Password Reset / Verification Code (node mailer)
+- Password Complexity for Change Password
+- Send Username in Forgot Password Email
 - Carousel of Games Up/Down
 - Page Loading
 - Delete Account
