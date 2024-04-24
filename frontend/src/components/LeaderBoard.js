@@ -29,11 +29,11 @@ const Leaderboard = () => {
                 console.log('Result:', results)
                 console.log('Error:', error)
                 if (error) {
-                    alert(error.toString())
+                    console.log(error.toString())
                 }
                 setLeaderboardData(results)
             } catch(e) {
-                alert(e.toString())
+                console.log(e.toString())
             }
         }
 

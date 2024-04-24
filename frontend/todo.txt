@@ -4,9 +4,6 @@ CRITICAL
 email-verification
 forgot-password
 
-QOL
-show password checkbox
-
 display user on score board
     if not top 10, display at the bottom of leaderboard
     if top 10, display in position
