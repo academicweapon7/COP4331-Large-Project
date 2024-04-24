@@ -11,6 +11,7 @@ import SwiftUI
 
 struct GameView: View {
     @Binding var username: String
+    @Binding var highscore: Int
     @State private var showGameoverView = false
     @State private var showLandingView = false
     
@@ -31,8 +32,8 @@ struct GameView: View {
     @State private var function1Called = false
     @State private var function2Called = false
     @State private var gameOver = false
-    @State private var highScore = 0
     @State private var score = 0
+    @State private var correctChoice = false
   
     
     var body: some View {
@@ -55,12 +56,12 @@ struct GameView: View {
                     
                     HStack{
                         
-                        Text("High Score: \(highScore)")
+                        Text("High Score: \(highscore)")
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
                             .padding(.top , -20)
-                            .padding(.leading, 165.0)
+                            .padding(.leading, 130.0)
                         
                         Text("Score: \(score)")
                             .font(.title3)
@@ -132,6 +133,7 @@ struct GameView: View {
                 }
                 
                 Circle()
+                    .padding(.top)
                     .frame(width: 100.0, height: 100.0)
                     .foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
                 
@@ -139,6 +141,7 @@ struct GameView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
+                    .padding(.top)
                 
                     .navigationBarBackButtonHidden(true)
                     .toolbar {
@@ -159,14 +162,16 @@ struct GameView: View {
                             }
                         }
                     }
+                
                     .navigationDestination(isPresented: $showGameoverView){
                         GameOverView(score: $score, username: $username)
                     }
                     .navigationDestination(isPresented: $showLandingView){
-                        LandingView(username: $username)
+                        LandingView(username: $username, highscore: $highscore)
                         
                     }
-            }
+                
+            }//ZStack
             
         }
         
@@ -244,6 +249,7 @@ struct GameView: View {
         
         //getGame API call for second game
         func getGame2(){
+            
             let getGameEndpoint: String = "https://steamguru-77d4152ed074.herokuapp.com/api/getgame"
             guard let getGameURL = URL(string: getGameEndpoint) else {
                 print("Error: cannot create URL")
@@ -315,9 +321,17 @@ struct GameView: View {
         func gameplay1() {
             if(playerCountInt1 >= playerCountInt2){
                 
-                getGame2()
+                
+                gameTitle1 = gameTitle2
+                gameImage1 = gameImage2
+                peakPlayerCount1 = peakPlayerCount2
+                playerCountInt1 = playerCountInt2
+                
                 print("Game 1 is correct!")
+                
+                getGame2()
                 score += 1
+                
                 
             }else{showGameoverView = true}
         }
@@ -330,7 +344,7 @@ struct GameView: View {
                 gameImage1 = gameImage2
                 peakPlayerCount1 = peakPlayerCount2
                 playerCountInt1 = playerCountInt2
-                print("game 2 is correct!")
+                print("Game 2 is correct!")
                 
                 getGame2()
                 score += 1
@@ -347,9 +361,10 @@ struct GameView: View {
 
     struct GameViewPreviewContainer : View {
          @State private var username = "RickL"
+         @State private var highscore = 99
 
          var body: some View {
-              GameView(username: $username)
+              GameView(username: $username, highscore: $highscore)
          }
     }
 
