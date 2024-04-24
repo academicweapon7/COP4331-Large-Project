@@ -7,7 +7,7 @@ exports.setApp = function ( app, client )
   app.post('/api/register', async (req, res, next) =>
   {
     // incoming: email, login, password
-    // outgoing: error
+    // outgoing: verif_code, error
 
 
     function generateVerificationCode() {
@@ -66,7 +66,8 @@ exports.setApp = function ( app, client )
         rounds_won: 0,
         streak: 0,
         verified: false,
-        verif_code: verifCode};
+        verif_code: verifCode,
+        hsdate: new Date()};
       var error = '';
 
       try
@@ -80,7 +81,7 @@ exports.setApp = function ( app, client )
         error = e.toString();
       }
 
-      var ret = { error: error };
+      var ret = { verif_code:verifCode, error: error };
     }
     
     res.status(200).json(ret);
@@ -449,16 +450,19 @@ exports.setApp = function ( app, client )
     var rounds_played = -1;
     var rounds_won = -1;
     var error = '';
+    var highscoredate;
 
     if( results.length > 0) 
     {
       if(score > results[0].highscore)
       {
         highscore = score;
+        highscoredate = new Date();
       }
       else
       {
         highscore = results[0].highscore;
+        highscoredate = results[0].hsdate;
       }
       rounds_played = results[0].rounds_played + score + 1;
       rounds_won = results[0].rounds_won + score;
@@ -466,7 +470,7 @@ exports.setApp = function ( app, client )
       try {
         await db.collection("Users").updateOne(
           { login:login },
-          { $set: { highscore:highscore, rounds_played:rounds_played, rounds_won:rounds_won } }
+          { $set: { highscore:highscore, rounds_played:rounds_played, rounds_won:rounds_won, hsdate:highscoredate } }
         );
       } 
       catch (e) 
@@ -487,7 +491,7 @@ exports.setApp = function ( app, client )
   app.post('/api/getleaderboard', async (req, res, next) =>
   {
     // incoming: top, bottom
-    // outgoing: results
+    // outgoing: results, error
 
     var _ret = [];
     var error = '';
@@ -500,7 +504,7 @@ exports.setApp = function ( app, client )
     }
     else{
       const db = client.db("Database");
-      const results = await db.collection('Users').find().sort({highscore: -1}).skip(top-1).limit(bottom-top+1).toArray();
+      const results = await db.collection('Users').find().sort({highscore: -1, hsdate: 1}).skip(top-1).limit(bottom-top+1).toArray();
 
       if (results.length <= 0) 
       {
