@@ -472,16 +472,19 @@ exports.setApp = function ( app, client )
     var rounds_played = -1;
     var rounds_won = -1;
     var error = '';
+    var highscoredate;
 
     if( results.length > 0) 
     {
       if(score > results[0].highscore)
       {
         highscore = score;
+        highscoredate = new Date();
       }
       else
       {
         highscore = results[0].highscore;
+        highscoredate = results[0].hsdate;
       }
       rounds_played = results[0].rounds_played + score + 1;
       rounds_won = results[0].rounds_won + score;
@@ -489,7 +492,7 @@ exports.setApp = function ( app, client )
       try {
         await db.collection("Users").updateOne(
           { login:login },
-          { $set: { highscore:highscore, rounds_played:rounds_played, rounds_won:rounds_won } }
+          { $set: { highscore:highscore, rounds_played:rounds_played, rounds_won:rounds_won, hsdate:highscoredate } }
         );
       } 
       catch (e) 
