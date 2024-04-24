@@ -4,7 +4,7 @@ import Navigation from '../components/Navigation';
 import DisplayEmail from '../components/DisplayEmail';
 import PageTitle from '../components/PageTitle';
 import AccountVerification from '../components/AccountVerification';
-import CreateCode from '../components/CreateCode'; 
+// import CreateCode from '../components/CreateCode'; 
 import '../styles.css';
 
 const AccountVerificationPage = () => {
@@ -22,7 +22,7 @@ const AccountVerificationPage = () => {
                     <PageTitle />
                 </Grid>
                 <Grid item xs={12}>
-                    <CreateCode />
+                    {/* <CreateCode /> */}
                     <AccountVerification />
                 </Grid>
             </Grid>
