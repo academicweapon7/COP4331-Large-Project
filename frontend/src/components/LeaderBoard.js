@@ -119,8 +119,6 @@ const Leaderboard = () => {
                 </div>
             )}
 
-            {/* Leaderboard section */}
-            {/* Table headers with onClick to handle sorting */}
             <div>
                 <h2 style={{ color: 'white' }}>Leaderboard</h2>
                 <table className='table table-striped table-dark table-bordered'>
@@ -128,8 +126,8 @@ const Leaderboard = () => {
                         <tr>
                             <th scope='col'>Position</th>
                             <th scope='col'>Username</th>
-                            <th scope='col' onClick={() => handleSortChange('highscore')}>High Score</th>
-                            <th scope='col' onClick={() => handleSortChange('rounds_played')}>Rounds Played</th>
+                            <th scope='col' className='hoverable-col' onClick={() => handleSortChange('highscore')}>High Score</th>
+                            <th scope='col' className='hoverable-col' onClick={() => handleSortChange('rounds_played')}>Rounds Played</th>
                             <th scope='col'>Accuracy</th>
                         </tr>
                     </thead>

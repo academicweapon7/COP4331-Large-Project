@@ -32,6 +32,7 @@ function PasswordReset() {
             alert(e.toString());
             return;
         }
+        window.location.href = '../'
     };
     
 

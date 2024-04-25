@@ -8,6 +8,20 @@
   pointer-events: none;
 }
 
+.hoverable-col {
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.hoverable-col:hover {
+  background-color: #f8f9fa;
+  color: #212529;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  border-color: #dee2e6;
+  font-weight: bold;
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

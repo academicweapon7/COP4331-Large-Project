@@ -84,7 +84,7 @@ function Account() {
 
     return (
         <div className="row justify-content-center">
-            <div className="col-md-3">
+            <div className="col-md-2">
                 <div className="card p-4">
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         {isLoading ? (
