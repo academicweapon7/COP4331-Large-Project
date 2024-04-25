@@ -109,32 +109,71 @@ exports.setApp = function ( app, client )
     res.status(200).json(ret);
   });
 
-  app.post('/api/createcode', async (req, res, next) => {
-    // incoming: email, verif_code
+  app.post('/api/forgotpassword', async (req, res, next) =>
+  {
+    // incoming: email
     // outgoing: error
-  
-    const { email, verif_code } = req.body;
-  
-    const db = client.db("Database");
-    const results = await db.collection('Users').find({ email: email }).toArray();
-  
-    var error = '';
-  
-    if (results.length > 0) {
-      try {
-        await db.collection("Users").updateOne(
-          { email: email },
-          { $set: { verif_code: verif_code } }
-        );
-      } catch (e) {
-        error = e.toString();
+
+    function generateTempPassword() {
+      const length = 10;
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@$!%*?&";
+      let password = "";
+      for (let i = 0; i < length; i++) {
+          const randomIndex = Math.floor(Math.random() * charset.length);
+          password += charset[randomIndex];
       }
-    } else {
-      error = "User not found.";
+      return password;
     }
+
+    async function sendForgotPasswordEmail(email, tempPassword) {
+      let transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+              user: 'ldubuget@gmail.com',
+              pass: 'brdg pbwq bnil qwct'
+          }
+      });
   
-    var ret = { error: error };
-    res.status(200).json(ret);
+      let mailOptions = {
+          from: 'ldubuget@gmail.com',
+          to: email,
+          subject: 'Forgot Password',
+          text: `Your temporary password is: ${tempPassword}`
+      };
+  
+      try {
+          let info = await transporter.sendMail(mailOptions);
+          console.log('Email sent:', info.response);
+      } catch (error) {
+          console.log('Error sending email:', error);
+      }
+    }
+
+    const { email } = req.body;
+
+    const db = client.db("Database");
+
+    try {
+        const user = await db.collection('Users').findOne({ email: email });
+        if (!user) {
+            return res.status(400).json({ error: "Email not found" });
+        }
+
+        const tempPassword = generateTempPassword();
+
+        try {
+            await db.collection("Users").updateOne(
+                { email: email },
+                { $set: { password: tempPassword } }
+            );
+            sendForgotPasswordEmail(email, tempPassword);
+            return res.status(200).json({ message: "Email sent" });
+        } catch (updateError) {
+            return res.status(500).json({ error: updateError.toString() });
+        }
+    } catch (findError) {
+        return res.status(500).json({ error: findError.toString() });
+    }
   });
 
   app.post('/api/verifyaccount', async(req, res, next) =>
@@ -247,53 +286,36 @@ exports.setApp = function ( app, client )
     res.status(200).json(ret);
   });
 
-  function isComplexPassword(password) {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(password);
-  }
-
   app.post('/api/editaccount', async (req, res, next) => {
-    // incoming: userId, username, email, password
-    // outgoing: error
-
-    const { userId, username, email, password } = req.body;
+    const { userId, username, password } = req.body;
 
     const { ObjectId } = require('mongodb');
-    var o_id = new ObjectId(userId);
+    const o_id = new ObjectId(userId);
 
     const db = client.db("Database");
-    const results = await db.collection('Users').find({ _id: o_id }).toArray();
 
-    var error = '';
+    try {
+        const existingUser = await db.collection('Users').findOne({ _id: o_id });
 
-    if (results.length > 0) {
-        const existingUser = results[0];
+        if (!existingUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
 
         const existingUsername = await db.collection('Users').findOne({ login: username });
-        const existingEmail = await db.collection('Users').findOne({ email: email });
 
         if (existingUsername && existingUsername._id.toString() !== userId) {
-            error = "Username already in use.";
-        } else if (existingEmail && existingEmail._id.toString() !== userId) {
-            error = "Email already in use.";
-        } else if (!isComplexPassword(password)) {
-            error = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
-        } else {
-            try {
-                await db.collection("Users").updateOne(
-                    { _id: o_id },
-                    { $set: { login: username, email: email, password: password } }
-                );
-            } catch (e) {
-                error = e.toString();
-            }
+            return res.status(400).json({ error: "Username already in use" });
         }
-    } else {
-        error = "User not found.";
-    }
 
-    var ret = { error: error };
-    res.status(200).json(ret);
+        await db.collection("Users").updateOne(
+            { _id: o_id },
+            { $set: { login: username, password: password } }
+        );
+
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        return res.status(500).json({ error: error.toString() });
+    }
   });
 
   app.post('/api/regenverif', async (req, res, next) => {
