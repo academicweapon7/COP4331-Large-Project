@@ -4,6 +4,34 @@ const nodemailer = require('nodemailer');
 
 exports.setApp = function ( app, client )
 {
+  app.post('/api/getposition', async (req, res, next) => {
+    // Incoming: email
+    // Outgoing: position, error
+    const { email } = req.body;
+    const db = client.db("Database");
+
+    try {
+      // Get high score of the user
+      const user = await db.collection('Users').findOne({ email: email });
+      if(!user) {
+        throw new Error('User not found');
+      }
+      const userHighscore = user.highscore;
+
+      // Count the number of users with a high score greater than the user's high score
+      const count = await db.collection('Users').countDocuments({ highscore: { $gt: userHighscore } });
+
+      // The position is the count plus one, as the count represents the number of users with a higher score
+      const position = count + 1;
+      ret = { position : position, error: '' }
+    } catch (error) {
+        console.error('Error finding position', error);
+        ret = {position: -1, error : 'An error occurred while finding position'}
+    }
+
+    res.status(200).json(ret);
+});
+
   app.post('/api/register', async (req, res, next) =>
   {
     // incoming: email, login, password
@@ -540,31 +568,6 @@ exports.setApp = function ( app, client )
       }
     }
 
-    var ret = {results:_ret, error:error};
-    res.status(200).json(ret);
-  });
-
-
-  app.post('/api/searchcards', async (req, res, next) => 
-  {
-    // incoming: userId, search
-    // outgoing: results[], error
-
-    var error = '';
-
-    const { userId, search } = req.body;
-
-    var _search = search.trim();
-    
-    const db = client.db("COP4331Cards");
-    const results = await db.collection('Cards').find({"Card":{$regex:_search+'.*', $options:'i'}}).toArray();
-    
-    var _ret = [];
-    for( var i=0; i<results.length; i++ )
-    {
-      _ret.push( results[i].Card );
-    }
-    
     var ret = {results:_ret, error:error};
     res.status(200).json(ret);
   });

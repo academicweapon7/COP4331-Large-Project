@@ -1,14 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// const data = [
-//     { name: "Anom", age: 19, gender: "Male" },
-//     { name: "Megha", age: 19, gender: "Female" },
-//     { name: "Subham", age: 25, gender: "Male" },
-// ]
+import FetchAccount from './FetchAccount.js';
 
 const Leaderboard = () => {
     const [leaderboardData, setLeaderboardData] = useState([])
+    const [positionData, setPosition] = useState(null)
+    const [accountData, setAccountData] = useState(null)
+
+    useEffect(() => {
+        var email = localStorage.getItem('userEmail');
+        const fetchAccountData = async () => {
+            try {
+                const bp = require('./Path.js')
+                var obj = {
+                    email: email
+                };
+                const js = JSON.stringify(obj);
+                // Fetch account data
+                const response = await fetch(bp.buildPath('api/getposition'),
+                {
+                    method: 'POST',
+                    body: js,
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const { position, error } = await response.json()
+                if (error) {
+                    console.log('Error:', error)
+                }
+                setPosition(position);
+                const accountData = await FetchAccount()
+                setAccountData(accountData);
+            } catch (error) {
+                console.error('Error fetching account data:', error)
+            }
+        };
+    
+        fetchAccountData();
+    }, []);
 
     useEffect(() => {
         const doLeaderboard = async () => {
@@ -40,12 +68,35 @@ const Leaderboard = () => {
         doLeaderboard()
     }, [])
     
-    return(
+    return (
         <div className='container text-center'>
-                <h2 style={{ color: 'white' }}>Leaderboard</h2>
+            <h2 style={{ color: 'white' }}>Your Stats</h2>
+            {accountData && (
+                <table className='table table-striped table-dark table-bordered'>
+                    <thead className='thead-dark'>
+                        <tr>
+                            <th scope='col'>Position</th>
+                            <th scope='col'>Username</th>
+                            <th scope='col'>High Score</th>
+                            <th scope='col'>Accuracy</th>
+                            <th scope='col'>Streak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{positionData}</td>
+                            <td>{accountData.login}</td>
+                            <td>{accountData.highscore}</td>
+                            <td>{((accountData.rounds_won / accountData.rounds_played) * 100).toFixed(2)}</td>
+                            <td>{accountData.streak}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            )}
 
+            <h2 style={{ color: 'white' }}>Leaderboard</h2>
             <table className='table table-striped table-dark table-bordered'>
-                <thead clas = "thead-dark">
+                <thead className='thead-dark'>
                     <tr>
                         <th scope='col'>#</th>
                         <th scope='col'>Username</th>
@@ -67,7 +118,7 @@ const Leaderboard = () => {
                 </tbody>
             </table>
         </div>
-    )
-};
-
+    );
+}
+    
 export default Leaderboard;
