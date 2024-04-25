@@ -540,21 +540,38 @@ exports.setApp = function ( app, client )
 
   app.post('/api/getleaderboard', async (req, res, next) =>
   {
-    // incoming: top, bottom
+    // incoming: parameter, top, bottom
     // outgoing: results, error
 
     var _ret = [];
     var error = '';
+    var results;
 
-    const { top, bottom } = req.body
+    const { parameter, top, bottom } = req.body
 
     if (top <= 0 || top > bottom)
     {
       error = "improper leaderboard parameters";
     }
     else{
-      const db = client.db("Database");
-      const results = await db.collection('Users').find().sort({highscore: -1, hsdate: 1}).skip(top-1).limit(bottom-top+1).toArray();
+      if( parameter == 0 ) {
+        const db = client.db("Database");
+        results = await db.collection('Users').find().sort({highscore: -1, hsdate: 1}).skip(top-1).limit(bottom-top+1).toArray();
+      }
+      else if( parameter == 1 ) {
+        const db = client.db("Database");
+        results = await db.collection('Users').find().sort({rounds_played: -1, hsdate: 1}).skip(top-1).limit(bottom-top+1).toArray();
+      }
+      //else if ( parameter == 2 ) {
+        //const db = client.db("Database");
+        //const results = await db.collection('Users').find().sort({accuracy: -1, hsdate: 1}).skip(top-1).limit(bottom-top+1).toArray();
+      //}
+      else {
+        const db = client.db("Database");
+        results = await db.collection('Users').find().sort({highscore: -1, hsdate: 1}).skip(top-1).limit(bottom-top+1).toArray();
+        error = "incorrect parameter, defaulting to highscore";
+      }
+      
 
       if (results.length <= 0) 
       {
