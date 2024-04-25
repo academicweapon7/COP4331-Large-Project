@@ -78,8 +78,9 @@ const Leaderboard = () => {
                             <th scope='col'>Position</th>
                             <th scope='col'>Username</th>
                             <th scope='col'>High Score</th>
+                            <th scope='col'>Rounds Played</th>
                             <th scope='col'>Accuracy</th>
-                            <th scope='col'>Streak</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -87,8 +88,9 @@ const Leaderboard = () => {
                             <td>{positionData}</td>
                             <td>{accountData.login}</td>
                             <td>{accountData.highscore}</td>
+                            <td>{accountData.rounds_played}</td>
                             <td>{((accountData.rounds_won / accountData.rounds_played) * 100).toFixed(2)}</td>
-                            <td>{accountData.streak}</td>
+                            
                         </tr>
                     </tbody>
                 </table>
@@ -98,11 +100,11 @@ const Leaderboard = () => {
             <table className='table table-striped table-dark table-bordered'>
                 <thead className='thead-dark'>
                     <tr>
-                        <th scope='col'>#</th>
-                        <th scope='col'>Username</th>
-                        <th scope='col'>High Score</th>
-                        <th scope='col'>Accuracy</th>
-                        <th scope='col'>Streak</th>
+                            <th scope='col'>Position</th>
+                            <th scope='col'>Username</th>
+                            <th scope='col'>High Score</th>
+                            <th scope='col'>Rounds Played</th>
+                            <th scope='col'>Accuracy</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,8 +113,9 @@ const Leaderboard = () => {
                             <th scope="row">{key + 1}</th>
                             <td>{val.login}</td>
                             <td>{val.highscore}</td>
+                            <td>{val.rounds_played}</td>
                             <td>{((val.rounds_won / val.rounds_played) * 100).toFixed(2)}</td>
-                            <td>{val.streak}</td>
+                            
                         </tr>
                     ))}
                 </tbody>
