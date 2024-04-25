@@ -126,8 +126,9 @@ struct GameOverView: View {
                 }
                 print("The highscore is: " + receivedGameover.description)
                 
-                highscore = receivedGameover["highscore"] as! Int
-                
+                if(username != "Guest"){
+                    highscore = receivedGameover["highscore"] as! Int
+                }
                 
             } catch {
                 print("error parsing response from POST on /login")
