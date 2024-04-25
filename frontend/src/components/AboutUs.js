@@ -22,7 +22,7 @@ function AboutUs() {
                 <Grid item xs={3}>
                     <div className="row justify-content-end">
                         <div className="logo-img" style={imgStyle}>
-                            <img src={require("../images/coin.gif")} alt="Adriel" className="logo-img" style={imgStyle}/>
+                            <img src={require("../images/adriel.png")} alt="Adriel" className="logo-img" style={imgStyle}/>
                             <figcaption style={captionStyle}>Adriel</figcaption>
                         </div>
                     </div>
