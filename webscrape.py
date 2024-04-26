@@ -6,14 +6,14 @@ import csv
 from pymongo import MongoClient
 
 # Connect to MongoDB
-client = MongoClient('mongodb+srv://RickL:COP4331@cluster0.l7iynfz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = MongoClient(MONGO_URI)
 db = client['Database']  # Replace 'mydatabase' with your database name
 collection = db['Games']  # Replace 'mycollection' with your collection name
 
 # Google Custom Search JSON API
 # DO NOT MAKE MORE THAN 100 REQUEST IN A DAY
-cse_id = "message matthew for details"
-api_key = "message matthew for details"
+cse_id = CSE_ID
+api_key = API_KEY
 
 csv_file = "data.csv"
 try:
