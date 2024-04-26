@@ -12,8 +12,8 @@ collection = db['Games']  # Replace 'mycollection' with your collection name
 
 # Google Custom Search JSON API
 # DO NOT MAKE MORE THAN 100 REQUEST IN A DAY
-cse_id = "058b8832640884a3d"
-api_key = "AIzaSyDeugBj9NGMmu3nA1Fc1dYEJJvnWkWQB-o"
+cse_id = "message matthew for details"
+api_key = "message matthew for details"
 
 csv_file = "data.csv"
 try:
